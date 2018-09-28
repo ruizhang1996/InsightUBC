@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/test_allInvalid.json" />
+    <file url="file://$PROJECT_DIR$/test_allInvalid2.json" />
+    <file url="file://$PROJECT_DIR$/test_allInvalid3.json" />
+    <file url="file://$PROJECT_DIR$/test_coursesNoJSON.json" />
+    <file url="file://$PROJECT_DIR$/test_empty.json" />
+    <file url="file://$PROJECT_DIR$/test_emptyJSON.json" />
+    <file url="file://$PROJECT_DIR$/test_invalidJSON1.json" />
+    <file url="file://$PROJECT_DIR$/test_manyFoldersInvalid.json" />
+    <file url="file://$PROJECT_DIR$/test_manyFoldersInvalid2.json" />
+    <file url="file://$PROJECT_DIR$/test_manyFoldersNoCourses.json" />
+    <file url="file://$PROJECT_DIR$/test_manyFoldersNoCourses2.json" />
+    <file url="file://$PROJECT_DIR$/test_manyNonCourses.json" />
+    <file url="file://$PROJECT_DIR$/test_noJSONFile.json" />
+    <file url="file://$PROJECT_DIR$/test_nonJSONInside.json" />
+    <file url="file://$PROJECT_DIR$/test_noSection.json" />
+    <file url="file://$PROJECT_DIR$/test_nullKindCourses.json" />
+    <file url="file://$PROJECT_DIR$/test_superInvalidJSON.json" />
+    <file url="file://$PROJECT_DIR$/test_undefinedKindCourses.json" />
+    <file url="file://$PROJECT_DIR$/test_zeroValid1.json" />
+    <file url="file://$PROJECT_DIR$/test_zeroValid2.json" />
+    <file url="file://$PROJECT_DIR$/test_zeroValid3.json" />
+    <file url="file://$PROJECT_DIR$/test_zeroValid4.json" />
+    <file url="file://$PROJECT_DIR$/test_zeroValid5.json" />
+  </component>
+</project>

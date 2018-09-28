@@ -42,13 +42,11 @@ export default class InsightFacade implements IInsightFacade {
         return new Promise(function (fulfill, reject) {
             t.parser.parseZip(content).then(function (courses: Course[]) {
                     t.storeData(id, courses).then(function (result: string[]) {
-                        Log.warn(result[0]);
                         fulfill(result);
                     }).catch(function () {
                         reject(new InsightError());
                     });
             }).catch(function () {
-                Log.error("err 2 in addDataSet");
                 reject(new InsightError());
             });
         });
@@ -56,11 +54,10 @@ export default class InsightFacade implements IInsightFacade {
 
     private storeData(id: string, courses: Course[]): Promise<string[]> {
         let t = this;
-        let zipName = id + ".json";
-        Log.info(zipName);
+        let jsonName = id + ".json";
         let jsonToString = JSON.stringify(courses);
         return new Promise(function (fulfill, reject) {
-            fs.writeFile(zipName, jsonToString, function (err: any) {
+            fs.writeFile(jsonName, jsonToString, function (err: any) {
                 if (!err) {
                     t.storage.set(id, courses);
                     t.idArray.push(id);
@@ -77,13 +74,13 @@ export default class InsightFacade implements IInsightFacade {
             return Promise.reject(new InsightError("invalid id for removal"));
         }
         let t = this;
-        let zipName = id + ".json";
+        let jsonName = id + ".json";
         return new Promise(function (fulfill, reject) {
-            if (!fs.existsSync(zipName) || !t.storage.has(id)) {
+            if (!fs.existsSync(jsonName) || !t.storage.has(id)) {
                 reject(new NotFoundError());
             } else {
                 t.storage.delete(id);
-                fs.unlinkSync(zipName);
+                fs.unlinkSync(jsonName);
                 t.idArray.splice(t.idArray.indexOf(id), 1);
                 fulfill(id);
             }
@@ -106,7 +103,7 @@ export default class InsightFacade implements IInsightFacade {
                     rows += c.numberOfSections();
                 }
                 let course: InsightDataset = t.createInsightDataSet(id, InsightDatasetKind.Courses, rows);
-                Log.warn(rows.toString());
+                Log.trace(rows.toString());
                 result.push(course);
             }
             fulfill(result);

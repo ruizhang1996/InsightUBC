@@ -309,7 +309,7 @@ describe("InsightFacade Add/Remove Dataset", function () {
         }
     });
 
-    it("Should return the list of dataset 3", async () => {
+    it("Should return the list of dataset 2", async () => {
         let response: any[];
         try {
             response = await insightFacade.listDatasets();
@@ -453,7 +453,7 @@ describe("InsightFacade Add/Remove Dataset", function () {
         }
     });
 
-    it("Should return the list of dataset 4", async () => {
+    it("Should return the list of dataset 3", async () => {
         let response: any[];
         try {
             response = await insightFacade.listDatasets();
