@@ -1,0 +1,46 @@
+{
+    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "AND":[
+                        {
+                            "GT": {
+                                "courses_avg":90
+                            }
+                        },
+                        {
+                            "IS": {
+                                "courses_dept":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "AND":[
+                        {
+                            "LT": {
+                                "courses_avg":98
+                            }
+                        },
+                        {
+                            "IS": {
+                                "courses_uuid":"19184"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_uuid",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+    "result":[{"courses_dept":"adhe","courses_uuid":"19184","courses_avg":90.02}]}

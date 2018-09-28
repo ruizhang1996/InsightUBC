@@ -1,0 +1,28 @@
+{
+    "title": "cannot find avg of null",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "EQ": {
+                        "courses_avg": null
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "math"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "Error"
+}

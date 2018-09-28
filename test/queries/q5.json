@@ -1,0 +1,53 @@
+{
+    "title": "SELECT everything WHERE stat 302 || instructor is alexandre || title is not intro probability",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "AND": [
+                        {
+                            "IS": {
+                                "courses_id": "302"
+                            }
+                        },
+                        {
+                            "IS": {
+                                "courses_dept": "stat"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "IS": {
+                        "courses_instructor": "bouchard-cote, alexandre"
+                    }
+                },
+                {
+                    "NOT":
+                    {
+                        "IS": {
+                            "course_title": "intr probability"
+                        }
+                    }
+
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg",
+                "courses_instructor",
+                "courses_title",
+                "courses_pass",
+                "courses_fail",
+                "courses_audit",
+                "courses_uuid"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+    "result":[{"courses_dept":"stat","courses_id":"302","courses_avg":73.3,"courses_instructor":"bouchard-cote, alexandre","courses_title":"intr probability","courses_pass":90,"courses_fail":3,"courses_audit":1,"courses_uuid":"43519"},{"courses_dept":"stat","courses_id":"302","courses_avg":73.56,"courses_instructor":"bouchard-cote, alexandre","courses_title":"intr probability","courses_pass":61,"courses_fail":3,"courses_audit":0,"courses_uuid":"2932"},{"courses_dept":"stat","courses_id":"302","courses_avg":73.67,"courses_instructor":"bouchard-cote, alexandre","courses_title":"intr probability","courses_pass":76,"courses_fail":2,"courses_audit":1,"courses_uuid":"73757"},{"courses_dept":"stat","courses_id":"302","courses_avg":74.53,"courses_instructor":"bouchard-cote, alexandre","courses_title":"intr probability","courses_pass":75,"courses_fail":2,"courses_audit":0,"courses_uuid":"81955"}]}
+

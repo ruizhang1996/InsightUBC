@@ -1,0 +1,28 @@
+{
+    "title": "cannot find pass of 100000",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "EQ": {
+                        "courses_pass": 100000
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "math"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_pass"
+            ],
+            "ORDER": "courses_pass"
+        }
+    },
+    "isQueryValid": true,
+    "result": []
+}

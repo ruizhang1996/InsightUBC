@@ -1,0 +1,20 @@
+{
+    "title": "SELECT dept, avg WHERE false key > 97, order by uuid",
+    "query": {
+        "WHERE": {
+            "GT": {
+                "courses_DNE": 97
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_uuid",
+                "courses_avg"
+            ],
+            "ORDER": "courses_uuid"
+        }
+    },
+    "isQueryValid": false,
+    "result": "false key"
+}
+

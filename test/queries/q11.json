@@ -1,0 +1,7 @@
+{
+    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "query": {
+    },
+    "isQueryValid": false,
+    "result": "missing query"
+}

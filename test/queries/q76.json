@@ -1,0 +1,28 @@
+{
+    "title": "cannot find audit of 10000",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "EQ": {
+                        "courses_audit": 10000
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "math"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_audit"
+            ],
+            "ORDER": "courses_audit"
+        }
+    },
+    "isQueryValid": true,
+    "result": []
+}

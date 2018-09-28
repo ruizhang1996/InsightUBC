@@ -1,0 +1,28 @@
+{
+    "title": "cannot find uuid of DNE",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "GT": {
+                        "courses_avg": 0
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_uuid": "DNE"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_uuid",
+                "courses_avg"
+            ],
+            "ORDER": "courses_uuid"
+        }
+    },
+    "isQueryValid": true,
+    "result": []
+}

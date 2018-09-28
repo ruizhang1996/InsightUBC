@@ -1,0 +1,29 @@
+{
+    "title": "cannot find course id of 0",
+    "query": {
+        "WHERE": {
+            "AND":[
+                {
+                    "GT": {
+                        "courses_avg":90
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_id":0
+                    }
+                }
+            ]
+
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "Error"
+}

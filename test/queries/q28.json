@@ -1,0 +1,29 @@
+{
+    "title": "cannot find course title of 0",
+    "query": {
+        "WHERE": {
+            "AND":[
+                {
+                    "GT": {
+                        "courses_avg":90
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_title":"DNE"
+                    }
+                }
+            ]
+
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+    "result": []
+}

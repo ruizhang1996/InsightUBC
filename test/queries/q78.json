@@ -1,0 +1,28 @@
+{
+    "title": "cannot find uuid of 0",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "GT": {
+                        "courses_avg": 0
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_uuid": 0
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_uuid",
+                "courses_avg"
+            ],
+            "ORDER": "courses_uuid"
+        }
+    },
+    "isQueryValid": false,
+    "result": "Error"
+}

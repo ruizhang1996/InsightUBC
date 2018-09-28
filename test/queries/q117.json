@@ -1,0 +1,27 @@
+{
+    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'DNE' ORDER BY avg",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "GT": {
+                        "courses_avg": 0
+                    }
+                },
+                {
+                    "EQ": {
+                        "courses_pass": 200
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_pass",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+    "result":[{"courses_dept":"math","courses_avg":59.11},{"courses_dept":"geog","courses_avg":64.83},{"courses_dept":"geob","courses_avg":65.19},{"courses_dept":"phys","courses_avg":66.15},{"courses_dept":"biol","courses_avg":66.68},{"courses_dept":"civl","courses_avg":66.75},{"courses_dept":"math","courses_avg":67.61},{"courses_dept":"comm","courses_avg":68.06},{"courses_dept":"apsc","courses_avg":68.62},{"courses_dept":"math","courses_avg":68.73},{"courses_dept":"busi","courses_avg":69.64},{"courses_dept":"geog","courses_avg":70.4},{"courses_dept":"geog","courses_avg":70.4},{"courses_dept":"cpsc","courses_avg":70.66},{"courses_dept":"comm","courses_avg":72},{"courses_dept":"hist","courses_avg":72.2},{"courses_dept":"biol","courses_avg":72.31},{"courses_dept":"biol","courses_avg":72.31},{"courses_dept":"chem","courses_avg":72.36},{"courses_dept":"biol","courses_avg":73.95},{"courses_dept":"biol","courses_avg":73.95},{"courses_dept":"eosc","courses_avg":74.79},{"courses_dept":"eosc","courses_avg":74.79},{"courses_dept":"comm","courses_avg":75.26},{"courses_dept":"biol","courses_avg":75.35},{"courses_dept":"comm","courses_avg":75.78},{"courses_dept":"econ","courses_avg":76.72},{"courses_dept":"econ","courses_avg":76.72},{"courses_dept":"biol","courses_avg":79.12},{"courses_dept":"phar","courses_avg":85.66},{"courses_dept":"phar","courses_avg":88.36},{"courses_dept":"phar","courses_avg":94.87}]}

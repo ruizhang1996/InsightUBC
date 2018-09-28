@@ -1,0 +1,37 @@
+{
+    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "OR":[
+                        {
+                            "GT": {
+                                "courses_avg":99
+                            }
+                        },
+                        {
+                            "GT": {
+                                "courses_fail":5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "IS": {
+                        "courses_dept":"lfs"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+    "result":[{"courses_dept":"lfs","courses_id":"252","courses_avg":71.22},{"courses_dept":"lfs","courses_id":"252","courses_avg":71.22},{"courses_dept":"lfs","courses_id":"100","courses_avg":72.84},{"courses_dept":"lfs","courses_id":"100","courses_avg":73.36},{"courses_dept":"lfs","courses_id":"100","courses_avg":73.96},{"courses_dept":"lfs","courses_id":"100","courses_avg":73.96},{"courses_dept":"lfs","courses_id":"100","courses_avg":78.58},{"courses_dept":"lfs","courses_id":"100","courses_avg":78.58},{"courses_dept":"lfs","courses_id":"250","courses_avg":79.26}]}

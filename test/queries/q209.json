@@ -1,0 +1,13 @@
+{
+    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "query": {
+        "WHERE": {
+            "GT":{
+                "courses_avg":97
+            }
+        },
+        "OPTIONS": null
+    },
+    "isQueryValid": false,
+    "result": "R"
+}

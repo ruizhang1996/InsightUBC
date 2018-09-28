@@ -1,0 +1,28 @@
+{
+    "title": "cannot find audit of null",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "EQ": {
+                        "courses_audit": null
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "math"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_audit"
+            ],
+            "ORDER": "courses_audit"
+        }
+    },
+    "isQueryValid": false,
+    "result": "Error"
+}
