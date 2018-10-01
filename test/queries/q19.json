@@ -1,29 +1,29 @@
 {
-    "title": "cannot find course id of  null",
+    "title": "Test NOT",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_id":null
-                    }
+            "NOT": {
+                "LT": {
+                    "courses_pass": 2655
                 }
-            ]
-
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_avg"
+                "courses_pass",
+                "courses_id"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses_pass"
+
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "engl", "courses_pass": 2655 , "courses_id": "112" },
+                { "courses_dept": "engl", "courses_pass": 2698 , "courses_id": "112" },
+                { "courses_dept": "engl", "courses_pass": 2994 , "courses_id": "112" }
+            ]
+
+
 }

@@ -1,18 +1,21 @@
 {
-    "title": "where is missing important stuff",
+    "title": "Empty result",
     "query": {
         "WHERE": {
-            "IS": null
+            "GT": {
+                "courses_avg":100
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
                 "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result":[]
+
+
 }

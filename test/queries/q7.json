@@ -1,38 +1,25 @@
 {
-    "title": "SELECT dept, avg WHERE avg > 97",
+    "title": "SELECT dept, avg WHERE avg = 97",
     "query": {
         "WHERE": {
-        "OR": [
-            {
-                "AND":[
-                    {
-                        "GT": {
-                            "courses_avg":null
-                        }
-                    },
-                    {
-                        "IS": {
-                            "courses_dept":"*********"
-                        }
-                    }
-                ]
-            },
-            {
-                "EQ": {
-                    "courses_avg": null
-                }
+            "EQ": {
+                "courses_avg":97
             }
-        ]
-    },
+        },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
                 "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
-    "isQueryValid": false,
-    "result": "Not implemented."
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "crwr", "courses_avg": 97 },
+                { "courses_dept": "epse", "courses_avg": 97 },
+                { "courses_dept": "psyc", "courses_avg": 97 }
+            ]
+
+
 }

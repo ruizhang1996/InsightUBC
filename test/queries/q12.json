@@ -1,25 +1,16 @@
 {
-    "title": "SELECT dept, id, avg WHERE avg == 99 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "title": "Find course germ110",
     "query": {
         "WHERE": {
-            "OR": [
+            "AND": [
                 {
-                    "AND":[
-                        {
-                            "GT": {
-                                "courses_avg":90
-                            }
-                        },
-                        {
-                            "IS": {
-                                "courses_dept":"adhe"
-                            }
-                        }
-                    ]
+                    "IS": {
+                        "courses_title":"begin germ 2"
+                    }
                 },
                 {
-                    "EQ": {
-                        "courses_avg":99
+                    "GT": {
+                        "courses_avg": 88
                     }
                 }
             ]
@@ -27,10 +18,18 @@
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_avg"
-            ]
+                "courses_avg",
+                "courses_id",
+                "courses_title"
+            ],
+            "ORDER": "courses_avg"
+
         }
     },
     "isQueryValid": true,
-    "result":[{"courses_dept":"adhe","courses_avg":90.85},{"courses_dept":"adhe","courses_avg":93.33},{"courses_dept":"adhe","courses_avg":96.11},{"courses_dept":"adhe","courses_avg":92.54},{"courses_dept":"adhe","courses_avg":90.82},{"courses_dept":"adhe","courses_avg":91.29},{"courses_dept":"adhe","courses_avg":91.48},{"courses_dept":"adhe","courses_avg":90.02},{"courses_dept":"adhe","courses_avg":90.17},{"courses_dept":"adhe","courses_avg":90.5},{"courses_dept":"adhe","courses_avg":91.33},{"courses_dept":"adhe","courses_avg":91.33},{"courses_dept":"adhe","courses_avg":90.72},{"courses_dept":"adhe","courses_avg":90.16},{"courses_dept":"adhe","courses_avg":90.18}]
+            "result": [
+                { "courses_dept": "germ", "courses_avg": 89 , "courses_id": "110", "courses_title": "begin germ 2" }
+            ]
+
+
 }

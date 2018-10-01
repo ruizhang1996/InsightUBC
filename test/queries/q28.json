@@ -1,29 +1,27 @@
 {
-    "title": "cannot find course title of 0",
+    "title": "Order by courses_id",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_title":"DNE"
-                    }
-                }
-            ]
-
+            "EQ": {
+                "courses_pass":300
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
+                "courses_id"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses_id"
         }
     },
     "isQueryValid": true,
-    "result": []
+            "result": [
+                { "courses_id": "101"},
+                { "courses_id": "102"},
+                { "courses_id": "112"},
+                { "courses_id": "114"},
+                { "courses_id": "154"},
+                { "courses_id": "279"}
+            ]
+
+
 }

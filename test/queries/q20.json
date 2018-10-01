@@ -1,29 +1,28 @@
 {
-    "title": "cannot find course id of  null",
+    "title": "Repeated column keys",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_id":"DNE"
-                    }
-                }
-            ]
-
+            "EQ": {
+                "courses_pass":400
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
+                "courses_avg",
+                "courses_dept",
+                "courses_dept",
+                "courses_avg",
+                "courses_audit",
                 "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
     "isQueryValid": true,
-    "result": []
+            "result": [
+                { "courses_dept": "fren", "courses_avg": 73.51, "courses_audit": 5 }
+            ]
+
+
 }

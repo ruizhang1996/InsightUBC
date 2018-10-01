@@ -1,18 +1,21 @@
 {
-    "title": "where is missing important stuff",
+    "title": "Invalid query: GT value should be a number",
     "query": {
         "WHERE": {
-            "GT": null
+            "GT": {
+                "courses_avg":"99.7"
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
                 "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
     "isQueryValid": false,
-    "result": "Error"
+            "result":""
+
+
 }

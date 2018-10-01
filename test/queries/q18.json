@@ -1,29 +1,18 @@
 {
-    "title": "cannot find course id of *****",
+    "title": "EMPTY COLUMN",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_id":"*****"
-                    }
-                }
-            ]
-
+            "GT": {
+                "courses_avg": 99
+            }
         },
         "OPTIONS": {
-            "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
-            ],
+            "COLUMNS": [],
             "ORDER": "courses_avg"
         }
     },
     "isQueryValid": false,
-    "result": "Error"
+            "result":"Columns cannot be empty"
+
+
 }

@@ -1,35 +1,54 @@
 {
-    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "title": "A complex test",
     "query": {
         "WHERE": {
-            "OR": [
+            "AND": [
                 {
-                    "AND":[
-                        {
-                            "GT": {
-                                "courses_avg":90
-                            }
-                        },
-                        {
-                            "IS": {
-                                "courses_dept":"adhe"
-                            }
+                    "NOT": {
+                        "IS": {
+                            "courses_instructor": ""
                         }
-                    ]
+                    }
                 },
                 {
-                    "EQ": {
-                        "courses_avg":95
+                    "IS": {
+                        "courses_title":""
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "stat"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_avg": 80
+                    }
+                },
+                {
+                    "LT": {
+                        "courses_pass": 10
                     }
                 }
             ]
         },
         "OPTIONS": {
-            "ORDER": "courses_avg"
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg",
+                "courses_id",
+                "courses_audit"
+            ],
+            "ORDER": "courses_audit"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "stat", "courses_avg": 92 , "courses_id": "560", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 81.75 , "courses_id": "561", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 85.5 , "courses_id": "561", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 88.83 , "courses_id": "561", "courses_audit": 0 }
+            ]
+
+
 }
-
-

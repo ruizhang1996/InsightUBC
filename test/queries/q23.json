@@ -1,20 +1,13 @@
 {
-    "title": "cannot find course instructor of null",
+    "title": "Malformed query",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_instructor":null
-                    }
-                }
-            ]
-
+            "GT": {
+                "courses_pass":100
+            },
+            "IS": {
+                "courses_dept": "cpsc"
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
@@ -25,5 +18,7 @@
         }
     },
     "isQueryValid": false,
-    "result": "Error"
+            "result":"Query is malformed"
+
+
 }

@@ -1,29 +1,27 @@
 {
-    "title": "cannot find course title of null",
+    "title": "Order by courses_instructor",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_title":null
-                    }
-                }
-            ]
-
+            "EQ": {
+                "courses_pass":300
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
+                "courses_instructor"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses_instructor"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_instructor": ""},
+                { "courses_instructor": "gilley, brett;hammer, philip;porritt, lucy;stull, roland;ver, leah may;woodell, daniel"},
+                { "courses_instructor": "herring, f geoffrey"},
+                { "courses_instructor": "klonsky, elisha"},
+                { "courses_instructor": "smith, karen"},
+                { "courses_instructor": "souza, michael"}
+            ]
+
+
 }

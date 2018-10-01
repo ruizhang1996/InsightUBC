@@ -1,44 +1,22 @@
 {
-    "title": "SELECT everything WHERE pass > 300 && fail == 5 && audit < 4 || uuid = 79559",
+    "title": "SELECT dept, avg WHERE avg < 0",
     "query": {
         "WHERE": {
-            "OR": [
-                {
-                    "AND": [
-                        {
-                            "GT": {
-                                "courses_pass": 300
-                            }
-                        },
-                        {
-                            "EQ": {
-                                "courses_fail": 5
-                            }
-                        },
-                        {
-                            "LT": {
-                                "courses_audit": 4
-                            }
-                        }
-                    ]
-                },
-                {
-                    "IS": {
-                        "courses_uuid": "79559"
-                    }
-                }
-            ]
+            "LT": {
+                "courses_avg":0
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
-                "courses_avg",
-                "courses_uuid"
+                "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
     "isQueryValid": true,
-    "result":[{"courses_dept":"civl","courses_id":"403","courses_avg":66.95,"courses_uuid":"79559"},{"courses_dept":"psyc","courses_id":"331","courses_avg":68.31,"courses_uuid":"89771"},{"courses_dept":"biol","courses_id":"325","courses_avg":70.31,"courses_uuid":"19654"},{"courses_dept":"engl","courses_id":"110","courses_avg":71.15,"courses_uuid":"22539"},{"courses_dept":"soci","courses_id":"200","courses_avg":71.6,"courses_uuid":"52689"},{"courses_dept":"biol","courses_id":"140","courses_avg":72.92,"courses_uuid":"72058"},{"courses_dept":"econ","courses_id":"301","courses_avg":73.31,"courses_uuid":"90913"},{"courses_dept":"phys","courses_id":"159","courses_avg":73.94,"courses_uuid":"419"},{"courses_dept":"chem","courses_id":"235","courses_avg":73.98,"courses_uuid":"64806"},{"courses_dept":"poli","courses_id":"240","courses_avg":74.21,"courses_uuid":"8894"},{"courses_dept":"poli","courses_id":"240","courses_avg":74.54,"courses_uuid":"17032"},{"courses_dept":"caps","courses_id":"390","courses_avg":74.7,"courses_uuid":"11370"},{"courses_dept":"caps","courses_id":"390","courses_avg":74.7,"courses_uuid":"11369"},{"courses_dept":"econ","courses_id":"356","courses_avg":74.81,"courses_uuid":"78428"},{"courses_dept":"poli","courses_id":"240","courses_avg":74.92,"courses_uuid":"62951"},{"courses_dept":"apsc","courses_id":"450","courses_avg":75.77,"courses_uuid":"36611"},{"courses_dept":"comm","courses_id":"395","courses_avg":76.16,"courses_uuid":"67568"},{"courses_dept":"engl","courses_id":"220","courses_avg":76.18,"courses_uuid":"41482"},{"courses_dept":"cpsc","courses_id":"304","courses_avg":76.2,"courses_uuid":"62384"},{"courses_dept":"comm","courses_id":"370","courses_avg":76.27,"courses_uuid":"83758"},{"courses_dept":"lfs","courses_id":"250","courses_avg":76.98,"courses_uuid":"87872"},{"courses_dept":"comm","courses_id":"370","courses_avg":77.18,"courses_uuid":"38927"},{"courses_dept":"biol","courses_id":"361","courses_avg":77.2,"courses_uuid":"72159"},{"courses_dept":"lfs","courses_id":"250","courses_avg":77.22,"courses_uuid":"57377"},{"courses_dept":"comm","courses_id":"390","courses_avg":77.59,"courses_uuid":"44110"},{"courses_dept":"biol","courses_id":"361","courses_avg":77.6,"courses_uuid":"42223"},{"courses_dept":"crwr","courses_id":"200","courses_avg":78.92,"courses_uuid":"50503"},{"courses_dept":"comm","courses_id":"202","courses_avg":79.78,"courses_uuid":"707"},{"courses_dept":"ling","courses_id":"100","courses_avg":80.04,"courses_uuid":"35458"}]
+
+            "result": []
+
+
 }

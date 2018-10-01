@@ -1,29 +1,27 @@
 {
-    "title": "cannot find course title of *****",
+    "title": "Order by courses_dept",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_title":"*****"
-                    }
-                }
-            ]
-
+            "EQ": {
+                "courses_pass":300
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
+                "courses_dept"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses_dept"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "apsc"},
+                { "courses_dept": "biol"},
+                { "courses_dept": "chem"},
+                { "courses_dept": "eosc"},
+                { "courses_dept": "psyc"},
+                { "courses_dept": "psyc"}
+            ]
+
+
 }

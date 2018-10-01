@@ -1,29 +1,27 @@
 {
-    "title": "cannot find course title of 0",
+    "title": "Order by courses_uuid",
     "query": {
         "WHERE": {
-            "AND":[
-                {
-                    "GT": {
-                        "courses_avg":90
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_title":0
-                    }
-                }
-            ]
-
+            "EQ": {
+                "courses_pass":300
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
+                "courses_uuid"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses_uuid"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_uuid": "2362"},
+                { "courses_uuid": "54484"},
+                { "courses_uuid": "72041"},
+                { "courses_uuid": "78078"},
+                { "courses_uuid": "80815"},
+                { "courses_uuid": "8301"}
+            ]
+
+
 }

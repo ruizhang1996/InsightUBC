@@ -1,0 +1,16 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "no body"
+}

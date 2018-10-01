@@ -1,38 +1,26 @@
 {
-    "title": "SELECT dept, id, avg WHERE avg == 98 || avg > 90 && avg < 80 ORDER BY avg (which is impossible)",
+    "title": "Find courses that have more than 20 audits",
     "query": {
         "WHERE": {
-            "OR": [
-                {
-                    "AND":[
-                        {
-                            "GT": {
-                                "courses_avg":90
-                            }
-                        },
-                        {
-                            "LT": {
-                                "courses_avg":80
-                            }
-                        }
-                    ]
-                },
-                {
-                    "EQ": {
-                        "courses_avg":98
-                    }
-                }
-            ]
+            "GT": {
+                "courses_audit":20
+            }
         },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
-                "courses_avg"
+                "courses_avg",
+                "courses_id"
             ],
             "ORDER": "courses_avg"
         }
     },
     "isQueryValid": true,
-    "result":[{"courses_dept":"crwr","courses_id":"599","courses_avg":98},{"courses_dept":"crwr","courses_id":"599","courses_avg":98}]
+            "result": [
+                { "courses_dept": "rhsc", "courses_avg": 86.89 , "courses_id": "501" },
+                { "courses_dept": "rhsc", "courses_avg": 88.79 , "courses_id": "501" },
+                { "courses_dept": "cpsc", "courses_avg": 90.53 , "courses_id": "540" }
+            ]
+
+
 }

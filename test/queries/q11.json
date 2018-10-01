@@ -1,7 +1,24 @@
 {
-    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "title": "Input courses_id as number",
     "query": {
+        "WHERE": {
+            "IS": {
+                "courses_id":110
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg",
+                "courses_id"
+            ],
+            "ORDER": "courses_avg"
+
+        }
     },
     "isQueryValid": false,
-    "result": "missing query"
+
+            "result":"Invalid query: IS value should be a string"
+
+
 }

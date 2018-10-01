@@ -1,16 +1,38 @@
 {
-    "title": "where is missing important stuff",
+    "title": "Using IS on courses_avg",
     "query": {
-        "WHERE": null,
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_dept": "c*"
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "*c"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_pass": 850
+                    }
+                }
+            ]
+        },
         "OPTIONS": {
             "COLUMNS": [
                 "courses_dept",
-                "courses_id",
                 "courses_avg"
             ],
             "ORDER": "courses_avg"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result":[
+                {"courses_dept": "cpsc", "courses_avg": 72.28},
+                {"courses_dept": "cpsc", "courses_avg": 73.25}
+            ]
+
+
 }

@@ -1,28 +1,18 @@
 {
-    "title": "cannot find dept of 0",
+    "title": "Missing COLUMN",
     "query": {
         "WHERE": {
-            "AND": [
-                {
-                    "GT": {
-                        "courses_avg": 0
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_dept": 0
-                    }
-                }
-            ]
+            "GT": {
+                "courses_avg":90
+            }
         },
         "OPTIONS": {
-            "COLUMNS": [
-                "courses_dept",
-                "courses_avg"
-            ],
             "ORDER": "courses_avg"
+
         }
     },
     "isQueryValid": false,
-    "result": "Error"
+            "result":"IOptions format is wrong"
+
+
 }

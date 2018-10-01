@@ -1,18 +1,19 @@
 {
-    "title": "SELECT dept, avg WHERE avg > 97, order by audit",
+    "title": "OR no condition",
     "query": {
         "WHERE": {
-            "GT": {
-                "courses_avg":97
-            }
+            "OR": []
         },
         "OPTIONS": {
             "COLUMNS": [
-                "courses_audit",
+                "courses_dept",
                 "courses_avg"
             ],
-            "ORDER": "courses_audit"
+            "ORDER": "courses_avg"
         }
     },
-    "isQueryValid": true,
-    "result":[{"courses_audit":0,"courses_avg":97.09},{"courses_audit":0,"courses_avg":99.19},{"courses_audit":0,"courses_avg":97.47},{"courses_audit":0,"courses_avg":98},{"courses_audit":0,"courses_avg":98},{"courses_audit":0,"courses_avg":97.5},{"courses_audit":0,"courses_avg":98.75},{"courses_audit":0,"courses_avg":98.75},{"courses_audit":0,"courses_avg":98.08},{"courses_audit":0,"courses_avg":98.7},{"courses_audit":0,"courses_avg":98.36},{"courses_audit":0,"courses_avg":97.29},{"courses_audit":0,"courses_avg":97.29},{"courses_audit":0,"courses_avg":98.8},{"courses_audit":0,"courses_avg":97.41},{"courses_audit":0,"courses_avg":98.58},{"courses_audit":0,"courses_avg":98.58},{"courses_audit":0,"courses_avg":98.76},{"courses_audit":0,"courses_avg":98.76},{"courses_audit":0,"courses_avg":98.45},{"courses_audit":0,"courses_avg":98.45},{"courses_audit":0,"courses_avg":97.78},{"courses_audit":0,"courses_avg":97.41},{"courses_audit":0,"courses_avg":97.69},{"courses_audit":0,"courses_avg":97.47},{"courses_audit":0,"courses_avg":97.09},{"courses_audit":0,"courses_avg":97.67},{"courses_audit":0,"courses_avg":98.98},{"courses_audit":0,"courses_avg":97.33},{"courses_audit":0,"courses_avg":99.78},{"courses_audit":0,"courses_avg":99.78},{"courses_audit":0,"courses_avg":97.48},{"courses_audit":0,"courses_avg":97.48},{"courses_audit":0,"courses_avg":97.09},{"courses_audit":0,"courses_avg":97.09},{"courses_audit":0,"courses_avg":98.71},{"courses_audit":0,"courses_avg":98.71},{"courses_audit":0,"courses_avg":98.21},{"courses_audit":0,"courses_avg":98.21},{"courses_audit":0,"courses_avg":97.53},{"courses_audit":0,"courses_avg":97.53},{"courses_audit":0,"courses_avg":98.5},{"courses_audit":0,"courses_avg":98.5},{"courses_audit":0,"courses_avg":98.58},{"courses_audit":0,"courses_avg":98.58},{"courses_audit":0,"courses_avg":97.33},{"courses_audit":0,"courses_avg":98.98},{"courses_audit":1,"courses_avg":97.25},{"courses_audit":1,"courses_avg":97.25}]}
+    "isQueryValid": false,
+            "result":"Invalid query: OR should contain at least one condition"
+
+
+}

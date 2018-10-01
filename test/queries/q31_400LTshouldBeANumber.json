@@ -1,0 +1,40 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+        "WHERE": {
+            "AND":[
+                    {
+                        "IS":{
+                            "courses_dept": "cpsc"
+                        }
+                    },
+                    {
+                        "GT": {
+                            "courses_avg":94
+                        }
+                    },
+                    {
+                        "IS":{
+                            "courses_dept": "math"
+                        }
+                    },
+                    {
+                        "LT": {
+                            "courses_avg":"100"
+                        }
+                    }
+            ]
+
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "LT NAN"
+}

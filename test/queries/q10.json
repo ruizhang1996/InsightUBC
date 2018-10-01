@@ -1,30 +1,43 @@
 {
-    "title": "SELECT dept, id, avg WHERE avg == 95 || avg > 90 && dept == 'adhe' ORDER BY avg",
+    "title": "Should only show the course chem315",
     "query": {
         "WHERE": {
-            "OR": [
+            "AND": [
                 {
-                    "AND":[
-                        {
-                            "GT": {
-                                "courses_avg":90
-                            }
-                        },
-                        {
-                            "IS": {
-                                "courses_dept":"adhe"
+                    "NOT": {
+                        "NOT": {
+                            "LT": {
+                                "courses_fail": 5
                             }
                         }
-                    ]
+                    }
                 },
                 {
-                    "EQ": {
-                        "courses_avg":95
+                    "LT": {
+                        "courses_avg":50
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "chem"
                     }
                 }
             ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg",
+                "courses_id",
+                "courses_fail"
+            ],
+            "ORDER": "courses_avg"
         }
     },
-    "isQueryValid": false,
-    "result": "Error"
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "chem", "courses_avg": 42.5 , "courses_id": "315", "courses_fail": 3 }
+            ]
+
+
 }
