@@ -1420,12 +1420,12 @@ describe("InsightFacade PerformQuery", () => {
             // This try/catch is a hack to let your dynamic tests execute even if the addDataset method fails.
             // In D1, you should remove this try/catch to ensure your datasets load successfully before trying
             // to run you queries.
-            // try {
-            //     const responses: string[][] = await Promise.all(responsePromises);
-            //     responses.forEach((response) => expect(response).to.be.an("array"));
-            // } catch (err) {
-            //     Log.warn(`Ignoring addDataset errors. For D1, you should allow errors to fail the Before All hook.`);
-            // }
+            try {
+                const responses: string[][] = await Promise.all(responsePromises);
+                responses.forEach((response) => expect(response).to.be.an("array"));
+            } catch (err) {
+                Log.warn(`Ignoring addDataset errors. For D1, you should allow errors to fail the Before All hook.`);
+            }
         } catch (err) {
             expect.fail("", "", `Failed to read one or more datasets. ${JSON.stringify(err)}`);
         }

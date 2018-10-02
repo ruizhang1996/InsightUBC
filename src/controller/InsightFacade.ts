@@ -3,7 +3,7 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFou
 import {ParseZip} from "./ParseZip";
 import {Course} from "./Course";
 import {InsightQuery, InsightFilter, InsightOptions} from "./Query";
-import {isNumber, isString} from "util";
+import {isNumber, isString, log} from "util";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -104,26 +104,32 @@ export default class InsightFacade implements IInsightFacade {
         }
     }
     private isFilterSatisfied(filter: InsightFilter, data: any, cid: string): boolean {
-        if (Object.keys(filter).length > 1) {
+        if (Object.keys(filter).length > 1 ) {
             throw new Error("Query is malformed");
         } else if (filter.NOT) {
             return (!(this.isFilterSatisfied(filter.NOT, data, cid)));
         } else if (filter.AND) {
-            if (filter.AND.length < 0) {
+            if (filter.AND.length < 1) {
                 throw new Error("at least one filter in AND");
             }
             for (const r of filter.AND) {
+                if (Object.keys(r).length < 1) {
+                    throw new Error("empty filter");
+                }
                 if (this.isFilterSatisfied(r, data, cid) === false) {
                     return false;
                 }
             }
             return true;
         } else if (filter.OR) {
-            if (filter.AND.length < 0) {
+            if (filter.OR.length < 1) {
                 throw new Error("at least one filter in OR");
             }
-            for (const r of filter.AND) {
-                if (this.isFilterSatisfied(r, data, cid) === false) {
+            for (const r of filter.OR) {
+                if (Object.keys(r).length < 1) {
+                    throw new Error("empty filter");
+                }
+                if (this.isFilterSatisfied(r, data, cid) === true) {
                     return true;
                 }
             }
@@ -191,11 +197,13 @@ export default class InsightFacade implements IInsightFacade {
                 }  else if (val[val.length - 1] === "*") {
                     return actualValue.startsWith(val.slice(0, val.length - 1));
                 }  else if (val.includes("*")) {
-                    throw  new Error();
+                    throw  new Error("no star in the middle");
                 }   else {
                     return (actualValue === val);
                 }
             }
+        } else {
+            throw new Error("Invalid filter name.");
         }
     }
     private trimDatasetByColumns(dataset: any[], columns: string[]): any[] {
@@ -207,7 +215,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (ID_KEY.includes("_")) {
                     key = ID_KEY.split("_")[1];
                 } else {
-                    key = ID_KEY;
+                    throw new Error("no _ in key");
                 }
                 if (data.hasOwnProperty(key)) {
                     entry[ID_KEY] = data[key];
@@ -237,30 +245,31 @@ export default class InsightFacade implements IInsightFacade {
         return new Promise<any[]>((fulfill, reject) => {
             try {
                 const filter: InsightFilter = query.WHERE;
-                const options = query.OPTIONS;
+                const options: InsightOptions = query.OPTIONS;
                 const columns = options.COLUMNS;
                 const order = options.ORDER;
                 const id: string = columns[0].split("_")[0];
                 let dataset;
+                let sections;
                 if (this.storage.get(id)) {
                     dataset =  this.storage.get(id);
                 } else {
                     throw new Error("invalid id");
                 }
                 if (Object.keys(filter).length > 0) {
-                    dataset = this.filterDataset(dataset, filter, id);
+                    sections = this.filterDataset(dataset, filter, id);
                 }
                 if (dataset.length >= 5000) {
                     throw new Error("too many result");
                 }
-                let result = this.trimDatasetByColumns(dataset, columns);
+                let result = this.trimDatasetByColumns(sections, columns);
                 if (order) {
                     result = this.sortResult(result, order, columns);
                 }
                 fulfill(result);
             } catch (err) {
                 Log.error(err);
-                reject(new InsightError ("invalid query") );
+                reject(new InsightError ("invalid query catch at perform") );
             }
         });
     }
