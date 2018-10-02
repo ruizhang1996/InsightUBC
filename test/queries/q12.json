@@ -1,0 +1,35 @@
+{
+    "title": "Find course germ110",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_title":"begin germ 2"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_avg": 88
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg",
+                "courses_id",
+                "courses_title"
+            ],
+            "ORDER": "courses_avg"
+
+        }
+    },
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "germ", "courses_avg": 89 , "courses_id": "110", "courses_title": "begin germ 2" }
+            ]
+
+
+}

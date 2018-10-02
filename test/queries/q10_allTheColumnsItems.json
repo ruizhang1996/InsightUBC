@@ -1,0 +1,48 @@
+{
+    "title": "SELECT dept, avg WHERE avg = 0",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "EQ": {
+                        "courses_avg": 0
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "frst"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg",
+                "courses_instructor",
+                "courses_title",
+                "courses_pass",
+                "courses_fail",
+                "courses_audit",
+                "courses_uuid"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+
+    "result": [
+    {
+        "courses_audit": 0, "courses_avg": 0,"courses_dept": "frst"
+        ,"courses_fail": 1
+        ,"courses_id": "202"
+        ,"courses_instructor": ""
+        ,"courses_pass": 0
+        ,"courses_title": "forest ecology"
+        ,"courses_uuid": "89536"
+    }
+    ]
+
+
+}

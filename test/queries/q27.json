@@ -1,0 +1,27 @@
+{
+    "title": "Order by courses_instructor",
+    "query": {
+        "WHERE": {
+            "EQ": {
+                "courses_pass":300
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_instructor"
+            ],
+            "ORDER": "courses_instructor"
+        }
+    },
+    "isQueryValid": true,
+            "result": [
+                { "courses_instructor": ""},
+                { "courses_instructor": "gilley, brett;hammer, philip;porritt, lucy;stull, roland;ver, leah may;woodell, daniel"},
+                { "courses_instructor": "herring, f geoffrey"},
+                { "courses_instructor": "klonsky, elisha"},
+                { "courses_instructor": "smith, karen"},
+                { "courses_instructor": "souza, michael"}
+            ]
+
+
+}

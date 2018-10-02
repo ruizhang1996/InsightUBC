@@ -1,0 +1,29 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+        "where?": {
+            "AND":[
+                {
+                    "IS":{
+                        "courses_dept": "cpsc"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_avg":94
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "bad where"
+}
