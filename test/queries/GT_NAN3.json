@@ -3,16 +3,7 @@
     "query": {
         "WHERE": {
             "AND":[
-                    {
-                        "IS":{
-                            "courses_dept": "cpsc"
-                        }
-                    },
-                    {
-                        "GT": {
-                            "courses_avg":94
-                        }
-                    },
+
                     {
                         "IS":{
                             "courses_dept": "math"

@@ -90,6 +90,13 @@ export default class InsightFacade implements IInsightFacade {
     }
     private filterDataset(dataset: any[], filter: InsightFilter, id: string): any[] {
         const filteredDataset: any[] = [];
+        if (Object.keys(filter).length === 0) {
+            for (const data of dataset) {
+                for (const sec of data.sections) {
+                    filteredDataset.push(sec);
+                }
+            }
+        }
         for (const data of dataset) {
             for (const sec of data.sections) {
                 if (this.isFilterSatisfied(filter, sec, id)) {
@@ -256,10 +263,8 @@ export default class InsightFacade implements IInsightFacade {
                 } else {
                     throw new Error("invalid id");
                 }
-                if (Object.keys(filter).length > 0) {
-                    sections = this.filterDataset(dataset, filter, id);
-                }
-                if (dataset.length >= 5000) {
+                sections = this.filterDataset(dataset, filter, id);
+                if (sections.length >= 5000) {
                     throw new Error("too many result");
                 }
                 let result = this.trimDatasetByColumns(sections, columns);
