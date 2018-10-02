@@ -96,11 +96,12 @@ export default class InsightFacade implements IInsightFacade {
                     filteredDataset.push(sec);
                 }
             }
-        }
-        for (const data of dataset) {
-            for (const sec of data.sections) {
-                if (this.isFilterSatisfied(filter, sec, id)) {
-                    filteredDataset.push(sec);
+        } else {
+            for (const data of dataset) {
+                for (const sec of data.sections) {
+                    if (this.isFilterSatisfied(filter, sec, id)) {
+                        filteredDataset.push(sec);
+                    }
                 }
             }
         }

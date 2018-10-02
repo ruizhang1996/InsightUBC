@@ -69,7 +69,7 @@ export class ParseZip {
                             for (let section of json.result) {
                                 course.addSection(new Section(section.Subject, section.Course,
                                     section.Avg, section.Professor, section.Title, section.Pass,
-                                    section.Fail, section.Audit, section.id.toString(), section.Year));
+                                    section.Fail, section.Audit, section.id.toString(), parseInt(section.Year, 10)));
                             }
                             fulfill(course);
                         }
