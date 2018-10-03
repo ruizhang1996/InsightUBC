@@ -110,11 +110,11 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }
         }
-        if (!filteredDataset) {
-            throw  new Error("No satisfied data found.");
-        } else {
-            return filteredDataset;
-        }
+        // if (!filteredDataset) {
+        //     throw  new Error("No satisfied data found.");
+        // } else {
+        return filteredDataset;
+        // }
     }
     private isFilterSatisfied(filter: InsightFilter, data: any, cid: string): boolean {
         if (Object.keys(filter).length > 1 ) {
