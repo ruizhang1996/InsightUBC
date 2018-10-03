@@ -4,6 +4,7 @@ import {ParseZip} from "./ParseZip";
 import {Course} from "./Course";
 import {InsightQuery, InsightFilter, InsightOptions} from "./Query";
 import {isNumber, isString, log} from "util";
+import {existsSync} from "fs";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -12,6 +13,7 @@ import {isNumber, isString, log} from "util";
  */
 
 let fs = require("fs");
+let directory =  __dirname + "/../../data";
 
 export default class InsightFacade implements IInsightFacade {
     private parser: ParseZip;
@@ -21,6 +23,9 @@ export default class InsightFacade implements IInsightFacade {
     constructor() {
         this.idArray = [];
         this.storage = new Map<string, Course[]>();
+        if (!existsSync(directory)) {
+            fs.mkdirSync(directory);
+        }
     }
 
     public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
@@ -56,10 +61,10 @@ export default class InsightFacade implements IInsightFacade {
 
     private storeData(id: string, courses: Course[]): Promise<string[]> {
         let t = this;
-        let jsonName = id + ".json";
+        let path = directory + "/" + id + ".json";
         let jsonToString = JSON.stringify(courses);
         return new Promise(function (fulfill, reject) {
-            fs.writeFile(jsonName, jsonToString, function (err: any) {
+            fs.writeFile(path, jsonToString, function (err: any) {
                 if (!err) {
                     t.storage.set(id, courses);
                     t.idArray.push(id);
@@ -76,13 +81,13 @@ export default class InsightFacade implements IInsightFacade {
             return Promise.reject(new InsightError("invalid id for removal"));
         }
         let t = this;
-        let jsonName = id + ".json";
+        let path = directory + "/" + id + ".json";
         return new Promise(function (fulfill, reject) {
-            if (!fs.existsSync(jsonName) || !t.storage.has(id)) {
+            if (!fs.existsSync(path) || !t.storage.has(id)) {
                 reject(new NotFoundError());
             } else {
                 t.storage.delete(id);
-                fs.unlinkSync(jsonName);
+                fs.unlinkSync(path);
                 t.idArray.splice(t.idArray.indexOf(id), 1);
                 fulfill(id);
             }
