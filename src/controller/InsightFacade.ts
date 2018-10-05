@@ -42,9 +42,6 @@ export default class InsightFacade implements IInsightFacade {
         if (t.idArray.includes(id)) {
             return Promise.reject(new InsightError("content already exists"));
         }
-        if (fs.existsSync(id + ".json")) {
-            // TODO parse from local disk!!!
-        }
         this.parser = new ParseZip();
         return new Promise(function (fulfill, reject) {
             t.parser.parseZip(content).then(function (courses: Course[]) {
@@ -68,6 +65,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (!err) {
                     t.storage.set(id, courses);
                     t.idArray.push(id);
+                    Log.warn("fulfill");
                     fulfill(t.idArray);
                 } else {
                     reject(new InsightError());
