@@ -257,8 +257,17 @@ export default class InsightFacade implements IInsightFacade {
             try {
                 const filter: InsightFilter = query.WHERE;
                 const options: InsightOptions = query.OPTIONS;
+                if (Object.keys(options).length === 0)  {
+                    throw new Error("empty option");
+                }
                 const columns = options.COLUMNS;
+                if (Object.keys(columns).length === 0) {
+                    throw new Error("empty column");
+                }
                 const order = options.ORDER;
+                if (!columns[0].includes("_")) {
+                    throw new Error("no _ in column");
+                }
                 const id: string = columns[0].split("_")[0];
                 let courseDataset;
                 let sections;
