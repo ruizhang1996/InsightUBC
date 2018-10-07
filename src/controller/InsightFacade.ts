@@ -91,34 +91,34 @@ export default class InsightFacade implements IInsightFacade {
             }
         });
     }
-    private filterDataset(dataset: any[], filter: InsightFilter, id: string): any[] {
+    private produceFilteredSections(courseSet: any[], filter: InsightFilter, id: string): any[] {
         const filteredDataset: any[] = [];
         if (Object.keys(filter).length === 0) {
-            for (const data of dataset) {
+            for (const data of courseSet) {
                 for (const sec of data.sections) {
                     filteredDataset.push(sec);
                 }
             }
         } else {
-            for (const data of dataset) {
+            for (const data of courseSet) {
                 for (const sec of data.sections) {
-                    if (this.isFilterSatisfied(filter, sec, id)) {
+                    if (this.isSatisfied(filter, sec, id)) {
                         filteredDataset.push(sec);
                     }
                 }
             }
         }
-        // if (!filteredDataset) {
-        //     throw  new Error("No satisfied data found.");
-        // } else {
         return filteredDataset;
-        // }
+
     }
-    private isFilterSatisfied(filter: InsightFilter, data: any, cid: string): boolean {
+    private isSatisfied(filter: InsightFilter, data: any, datasetID: string): boolean {
         if (Object.keys(filter).length > 1 ) {
             throw new Error("Query is malformed");
         } else if (filter.NOT) {
-            return (!(this.isFilterSatisfied(filter.NOT, data, cid)));
+            if (Object.keys(filter.NOT).length > 1) {
+                throw new Error("more than one filter in NOT");
+            }
+            return (!(this.isSatisfied(filter.NOT, data, datasetID)));
         } else if (filter.AND) {
             if (filter.AND.length < 1) {
                 throw new Error("at least one filter in AND");
@@ -127,7 +127,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (Object.keys(r).length < 1) {
                     throw new Error("empty filter");
                 }
-                if (this.isFilterSatisfied(r, data, cid) === false) {
+                if (this.isSatisfied(r, data, datasetID) === false) {
                     return false;
                 }
             }
@@ -140,7 +140,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (Object.keys(r).length < 1) {
                     throw new Error("empty filter");
                 }
-                if (this.isFilterSatisfied(r, data, cid) === true) {
+                if (this.isSatisfied(r, data, datasetID) === true) {
                     return true;
                 }
             }
@@ -151,8 +151,8 @@ export default class InsightFacade implements IInsightFacade {
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
-            if (fid !== cid) {
-                throw new Error("Query is trying to query tow datasets a the same time");
+            if (fid !== datasetID) {
+                throw new Error("Query is trying to query two datasets a the same time");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("GT should be a number");
@@ -165,8 +165,8 @@ export default class InsightFacade implements IInsightFacade {
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
-            if (fid !== cid) {
-                throw new Error("Query is trying to query tow datasets a the same time");
+            if (fid !== datasetID) {
+                throw new Error("Query is trying to query two datasets a the same time");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("LT should be a number");
@@ -179,8 +179,8 @@ export default class InsightFacade implements IInsightFacade {
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
-            if (fid !== cid) {
-                throw new Error("Query is trying to query tow datasets a the same time");
+            if (fid !== datasetID) {
+                throw new Error("Query is trying to query two datasets a the same time");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("EQ should be a number");
@@ -193,21 +193,21 @@ export default class InsightFacade implements IInsightFacade {
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue: string = data[col];
-            if (fid !== cid) {
-                throw new Error("Query is trying to query tow datasets a the same time");
+            if (fid !== datasetID) {
+                throw new Error("Query is trying to query two datasets a the same time");
             }
             if (!isString(val) || !isString(actualValue)) {
                 throw new Error("IS should be a string");
             } else {
                 if (val === "*") {
                     return true;
-                }  else if (val[0] === "*" && val[val.length - 1] === "*") {
-                    return actualValue.includes(val.substr(1, val.length - 2));
-                }  else if (val[0] === "*") {
+                }   else if (val[0] === "*" && val[val.length - 1] !== "*") {
                     return actualValue.endsWith(val.slice(1));
-                }  else if (val[val.length - 1] === "*") {
+                }   else if (val[val.length - 1] === "*" && val[0] !== "*") {
                     return actualValue.startsWith(val.slice(0, val.length - 1));
-                }  else if (val.includes("*")) {
+                }   else if (val[0] === "*" && val[val.length - 1] === "*") {
+                    return actualValue.includes(val.substr(1, val.length - 2));
+                }   else if (val.includes("*")) {
                     throw  new Error("no star in the middle");
                 }   else {
                     return (actualValue === val);
@@ -217,9 +217,9 @@ export default class InsightFacade implements IInsightFacade {
             throw new Error("Invalid filter name.");
         }
     }
-    private trimDatasetByColumns(dataset: any[], columns: string[]): any[] {
-        const trimmedDataset: any[] = [];
-        for (const data of dataset) {
+    private showColumns(sections: any[], columns: string[]): any[] {
+        const reducedDataset: any[] = [];
+        for (const data of sections) {
             const entry: {[key: string]: any } = {};
             for (const ID_KEY of columns) {
                 let key;
@@ -234,9 +234,9 @@ export default class InsightFacade implements IInsightFacade {
                     throw new Error("Invalid Key.");
                 }
             }
-            trimmedDataset.push(entry);
+            reducedDataset.push(entry);
         }
-        return trimmedDataset;
+        return reducedDataset;
     }
     private sortResult(result: any[], order: any, columns: string[]): any[] {
         if (!columns.includes(order)) {
@@ -260,18 +260,18 @@ export default class InsightFacade implements IInsightFacade {
                 const columns = options.COLUMNS;
                 const order = options.ORDER;
                 const id: string = columns[0].split("_")[0];
-                let dataset;
+                let courseDataset;
                 let sections;
                 if (this.storage.get(id)) {
-                    dataset =  this.storage.get(id);
+                    courseDataset =  this.storage.get(id);
                 } else {
                     throw new Error("invalid id");
                 }
-                sections = this.filterDataset(dataset, filter, id);
-                if (sections.length >= 5000) {
+                sections = this.produceFilteredSections(courseDataset, filter, id);
+                if (sections.length > 5000) {
                     throw new Error("too many result");
                 }
-                let result = this.trimDatasetByColumns(sections, columns);
+                let result = this.showColumns(sections, columns);
                 if (order) {
                     result = this.sortResult(result, order, columns);
                 }
