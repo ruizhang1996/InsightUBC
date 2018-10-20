@@ -22,7 +22,7 @@ export class ParseZipRoom {
         return new Promise(function (fulfill, reject) {
             t.zip.loadAsync(content, {base64: true})
                 .then(function (dataInZip: JSZip) {
-                    dataInZip.file("rooms/index.htm").async("text").then(function (indexData: any) {
+                    dataInZip.file("index.htm").async("text").then(function (indexData: any) {
                         t.parseIndexHTM(indexData).then(function (buildings: Building[]) {
                             fulfill(buildings);
                         }).catch(function (e) {
@@ -117,8 +117,8 @@ export class ParseZipRoom {
     private createBuildingPromise(dataInZip: JSZip, building: Building): Promise<Building> {
         let t = this;
         return new Promise<Building>(function (fulfill, reject) {
-            let stub2 = "rooms/" + building.getLink().substring(2);
-            dataInZip.file("rooms/" + building.getLink().substring(2)).async("text")
+            let stub2 = building.getLink().substring(2);
+            dataInZip.file(building.getLink().substring(2)).async("text")
                 .then(function (roomData: any) {
                     t.parseRooms(roomData, building).then(function (rooms: Room[]) {
                         building.setRooms(rooms);

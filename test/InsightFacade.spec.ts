@@ -1420,30 +1420,6 @@ describe("InsightFacade Add/Remove Dataset", function () {
             ([expected2]);
         }
     });
-
-    it("Should remove the rooms dataset", async () => {
-        const id: string = "rooms";
-        let response: string;
-        try {
-            response = await insightFacade.removeDataset(id);
-        } catch (err) {
-            response = err;
-        } finally {
-            expect(response).to.equal(id);
-        }
-    });
-
-    it("Should return the list of dataset 6", async () => {
-        let response: any[];
-        try {
-            response = await insightFacade.listDatasets();
-        } catch (err) {
-            response = err;
-        } finally {
-            expect(response).to.deep.equal
-            ([]);
-        }
-    });
 });
 
 // This test suite dynamically generates tests from the JSON files in test/queries.
