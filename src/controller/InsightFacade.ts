@@ -1,10 +1,12 @@
 import Log from "../Util";
 import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
 import {ParseZip} from "./ParseZip";
+import {ParseZipRoom} from "./ParseZipRoom";
 import {Course} from "./Course";
-import {InsightQuery, InsightFilter, InsightOptions} from "./Query";
-import {isNumber, isString, log} from "util";
+import {InsightFilter, InsightOptions} from "./Query";
+import {isNumber, isString} from "util";
 import {existsSync} from "fs";
+import {Building} from "./Building";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -16,13 +18,13 @@ let fs = require("fs");
 let directory =  __dirname + "/../../data";
 
 export default class InsightFacade implements IInsightFacade {
-    private parser: ParseZip;
+    private parser: any;
     private idArray: string[];
-    private storage: Map<string, Course[]>;
+    private storage: Map<string, any[]>;
 
     constructor() {
         this.idArray = [];
-        this.storage = new Map<string, Course[]>();
+        this.storage = new Map<string, any[]>();
         if (!existsSync(directory)) {
             fs.mkdirSync(directory);
         }
@@ -30,8 +32,8 @@ export default class InsightFacade implements IInsightFacade {
 
     public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
         let t = this;
-        if (!(kind === InsightDatasetKind.Courses)) {
-            return Promise.reject(new InsightError("Kind is not Courses"));
+        if (!(kind === InsightDatasetKind.Courses || kind === InsightDatasetKind.Rooms)) {
+            return Promise.reject(new InsightError("Kind is invalid"));
         }
         if (id === null || id === undefined || id === "") {
             return Promise.reject(new InsightError("id is invalid"));
@@ -42,28 +44,43 @@ export default class InsightFacade implements IInsightFacade {
         if (t.idArray.includes(id)) {
             return Promise.reject(new InsightError("content already exists"));
         }
-        this.parser = new ParseZip();
-        return new Promise(function (fulfill, reject) {
-            t.parser.parseZip(content).then(function (courses: Course[]) {
+        if (kind === InsightDatasetKind.Courses) {
+            this.parser = new ParseZip();
+            return new Promise(function (fulfill, reject) {
+                t.parser.parseZip(content).then(function (courses: Course[]) {
                     t.storeData(id, courses).then(function (result: string[]) {
                         fulfill(result);
                     }).catch(function () {
                         reject(new InsightError());
                     });
-            }).catch(function () {
-                reject(new InsightError());
+                }).catch(function () {
+                    reject(new InsightError());
+                });
             });
-        });
+        } else {
+            this.parser = new ParseZipRoom();
+            return new Promise(function (fulfill, reject) {
+                t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
+                    t.storeData(id, buildings).then(function (result: string[]) {
+                        fulfill(result);
+                    }).catch(function () {
+                        reject(new InsightError());
+                    });
+                }).catch(function () {
+                    reject(new InsightError());
+                });
+            });
+        }
     }
 
-    private storeData(id: string, courses: Course[]): Promise<string[]> {
+    private storeData(id: string, data: any[]): Promise<string[]> {
         let t = this;
         let path = directory + "/" + id + ".json";
-        let jsonToString = JSON.stringify(courses);
+        let jsonToString = JSON.stringify(data);
         return new Promise(function (fulfill, reject) {
             fs.writeFile(path, jsonToString, function (err: any) {
                 if (!err) {
-                    t.storage.set(id, courses);
+                    t.storage.set(id, data);
                     t.idArray.push(id);
                     Log.warn("fulfill");
                     fulfill(t.idArray);
@@ -298,14 +315,23 @@ export default class InsightFacade implements IInsightFacade {
         return new Promise<InsightDataset[]>(function (fulfill) {
             for (let entry of Array.from(t.storage.entries())) {
                 let id = entry[0];
-                let courseArray = entry[1];
+                let value = entry[1];
                 let rows = 0;
-                for (let c of courseArray) {
-                    rows += c.numberOfSections();
+                if (value[0].getType() === InsightDatasetKind.Courses) {
+                    for (let c of value) {
+                        rows += c.numberOfSections();
+                    }
+                    let course: InsightDataset = t.createInsightDataSet(id, InsightDatasetKind.Courses, rows);
+                    Log.trace(rows.toString());
+                    result.push(course);
+                } else {
+                    for (let b of value) {
+                        rows += b.numberOfRooms();
+                    }
+                    let rooms: InsightDataset = t.createInsightDataSet(id, InsightDatasetKind.Rooms, rows);
+                    Log.trace(rows.toString());
+                    result.push(rooms);
                 }
-                let course: InsightDataset = t.createInsightDataSet(id, InsightDatasetKind.Courses, rows);
-                Log.trace(rows.toString());
-                result.push(course);
             }
             fulfill(result);
         });

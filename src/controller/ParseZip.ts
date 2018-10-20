@@ -1,5 +1,4 @@
-// A class for parsing zip file
-
+// A class for parsing course zip file
 import {InsightError} from "./IInsightFacade";
 import {Course} from "./Course";
 import {Section} from "./Section";
@@ -69,7 +68,8 @@ export class ParseZip {
                             for (let section of json.result) {
                                 course.addSection(new Section(section.Subject, section.Course,
                                     section.Avg, section.Professor, section.Title, section.Pass,
-                                    section.Fail, section.Audit, section.id.toString(), parseInt(section.Year, 10)));
+                                    section.Fail, section.Audit, section.id.toString(),
+                                    ((section.Section === "overall") ? 1900 : parseInt(section.Year, 10))));
                             }
                             fulfill(course);
                         }

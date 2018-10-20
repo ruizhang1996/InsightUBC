@@ -1,5 +1,6 @@
 // a course object to store a course's data
 import {Section} from "./Section";
+import {InsightDatasetKind} from "./IInsightFacade";
 
 export class Course {
     private courseName: string;
@@ -12,6 +13,10 @@ export class Course {
 
     public addSection(section: Section) {
         this.sections.push(section);
+    }
+
+    public getType() {
+        return InsightDatasetKind.Courses;
     }
 
     public numberOfSections(): number {

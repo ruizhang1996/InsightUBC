@@ -57,6 +57,7 @@ describe("InsightFacade Add/Remove Dataset", function () {
         test_emptyJSON: "./test/data/test_emptyJSON.zip",
         test_nonJSONInside: "./test/data/test_nonJSONInside.zip",
         test_noJSONFile: "./test/data/test_noJSONFile.zip",
+        rooms: "./test/data/rooms.zip",
     };
 
     let insightFacade: InsightFacade;
@@ -1364,6 +1365,83 @@ describe("InsightFacade Add/Remove Dataset", function () {
             response = err;
         } finally {
             expect(response).to.be.instanceOf(InsightError);
+        }
+    });
+
+    it("Should add a valid room dataset", async () => {
+        const id: string = "rooms";
+        let response: string[];
+
+        try {
+            response = await insightFacade.addDataset(id, datasets[id], InsightDatasetKind.Rooms);
+        } catch (err) {
+            response = err;
+        } finally {
+            // Log.info(JSON.stringify(response));
+            expect(response).to.deep.equal(["courses", id]);
+        }
+    });
+
+    it("Should return the list of dataset 4", async () => {
+        const expected1: InsightDataset = {id: "courses", kind: InsightDatasetKind.Courses, numRows: 64612};
+        const expected2: InsightDataset = {id: "rooms", kind: InsightDatasetKind.Rooms, numRows: 364};
+        let response: any[];
+        try {
+            response = await insightFacade.listDatasets();
+        } catch (err) {
+            response = err;
+        } finally {
+            expect(response).to.deep.equal
+            ([expected1, expected2]);
+        }
+    });
+
+    it("Should remove the courses dataset", async () => {
+        const id: string = "courses";
+        let response: string;
+        try {
+            response = await insightFacade.removeDataset(id);
+        } catch (err) {
+            response = err;
+        } finally {
+            expect(response).to.equal(id);
+        }
+    });
+
+    it("Should return the list of dataset 5", async () => {
+        const expected2: InsightDataset = {id: "rooms", kind: InsightDatasetKind.Rooms, numRows: 364};
+        let response: any[];
+        try {
+            response = await insightFacade.listDatasets();
+        } catch (err) {
+            response = err;
+        } finally {
+            expect(response).to.deep.equal
+            ([expected2]);
+        }
+    });
+
+    it("Should remove the rooms dataset", async () => {
+        const id: string = "rooms";
+        let response: string;
+        try {
+            response = await insightFacade.removeDataset(id);
+        } catch (err) {
+            response = err;
+        } finally {
+            expect(response).to.equal(id);
+        }
+    });
+
+    it("Should return the list of dataset 6", async () => {
+        let response: any[];
+        try {
+            response = await insightFacade.listDatasets();
+        } catch (err) {
+            response = err;
+        } finally {
+            expect(response).to.deep.equal
+            ([]);
         }
     });
 });
