@@ -45,32 +45,42 @@ export default class InsightFacade implements IInsightFacade {
             return Promise.reject(new InsightError("content already exists"));
         }
         if (kind === InsightDatasetKind.Courses) {
-            this.parser = new ParseZip();
-            return new Promise(function (fulfill, reject) {
-                t.parser.parseZip(content).then(function (courses: Course[]) {
-                    t.storeData(id, courses).then(function (result: string[]) {
-                        fulfill(result);
-                    }).catch(function () {
-                        reject(new InsightError());
-                    });
-                }).catch(function () {
-                    reject(new InsightError());
-                });
-            });
+            return this.parseCourse(id, content);
         } else {
-            this.parser = new ParseZipRoom();
-            return new Promise(function (fulfill, reject) {
-                t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
-                    t.storeData(id, buildings).then(function (result: string[]) {
-                        fulfill(result);
-                    }).catch(function () {
-                        reject(new InsightError());
-                    });
+            return this.parseRoom(id, content);
+        }
+    }
+
+    private parseCourse(id: string, content: string): Promise<string[]> {
+        let t = this;
+        this.parser = new ParseZip();
+        return new Promise(function (fulfill, reject) {
+            t.parser.parseZip(content).then(function (courses: Course[]) {
+                t.storeData(id, courses).then(function (result: string[]) {
+                    fulfill(result);
                 }).catch(function () {
                     reject(new InsightError());
                 });
+            }).catch(function () {
+                reject(new InsightError());
             });
-        }
+        });
+    }
+
+    private parseRoom(id: string, content: string): Promise<string[]> {
+        let t = this;
+        this.parser = new ParseZipRoom();
+        return new Promise(function (fulfill, reject) {
+            t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
+                t.storeData(id, buildings).then(function (result: string[]) {
+                    fulfill(result);
+                }).catch(function () {
+                    reject(new InsightError());
+                });
+            }).catch(function () {
+                reject(new InsightError());
+            });
+        });
     }
 
     private storeData(id: string, data: any[]): Promise<string[]> {
