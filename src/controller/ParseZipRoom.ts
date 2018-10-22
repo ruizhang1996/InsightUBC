@@ -26,13 +26,13 @@ export class ParseZipRoom {
                         t.parseIndexHTM(indexData).then(function (buildings: Building[]) {
                             fulfill(buildings);
                         }).catch(function (e) {
-                            reject(new InsightError());
+                            reject(new InsightError("parseIndexHTM fail"));
                         });
                     }).catch(function (e) {
-                        reject(new InsightError());
+                        reject(new InsightError("async fail"));
                     });
                 }).catch(function (e: any) {
-                    reject(new InsightError());
+                    reject(new InsightError("loadAsync fail"));
             });
         });
     }
@@ -43,7 +43,6 @@ export class ParseZipRoom {
             let parse5Node: any = parse5.parse(indexHTM);
             let buildingCollector: Building[] = [];
             t.getAllBuildings(parse5Node, buildingCollector);
-            let stub = buildingCollector;
             t.completeBuildingWithRooms(buildingCollector).then(function (buildings: Building[]) {
                 let buildingHasRoom: boolean = false;
                 for (let b of buildings) {
@@ -54,12 +53,32 @@ export class ParseZipRoom {
                 if (buildingHasRoom) {
                     fulfill(buildings);
                 } else {
-                    reject(new InsightError());
+                    reject(new InsightError("not a single valid building"));
                 }
             }).catch(function (e) {
-                reject(new InsightError());
+                reject(new InsightError("completeBuildingWithRoom fail"));
             });
         });
+    }
+
+    private getAttributeValue(currTD: any) {
+        return currTD.attrs[0]["value"];
+    }
+
+    private getFullname(currTD: any) {
+        return currTD.childNodes[1].childNodes[0]["value"].trim();
+    }
+
+    private getShortname(currTD: any) {
+        return currTD.childNodes[0]["value"].trim();
+    }
+
+    private getAddress(currTD: any) {
+        return currTD.childNodes[0]["value"].trim();
+    }
+
+    private getLink(currTD: any) {
+        return currTD.childNodes[1]["attrs"][0]["value"].trim();
     }
 
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
@@ -70,15 +89,15 @@ export class ParseZipRoom {
             let link: string = null;
             for (let currTD of currNode.childNodes) {
                 if (currTD.nodeName === "td") {
-                    if (currTD.attrs[0]["value"].match("title")) {
-                        fullName = currTD.childNodes[1].childNodes[0]["value"].trim();
-                        link = currTD.childNodes[1]["attrs"][0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("title")) {
+                        fullName = this.getFullname(currTD);
+                        link = this.getLink(currTD);
                     }
-                    if (currTD.attrs[0]["value"].match("building-code")) {
-                        shortName = currTD.childNodes[0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("building-code")) {
+                        shortName = this.getShortname(currTD);
                     }
-                    if (currTD.attrs[0]["value"].match("building-address")) {
-                        address = currTD.childNodes[0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("building-address")) {
+                        address = this.getAddress(currTD);
                     }
                 }
             }
@@ -106,10 +125,10 @@ export class ParseZipRoom {
                     Promise.all(arrayOfPromises).then(function (buildings: Building[]) {
                         fulfill(buildings);
                     }).catch(function () {
-                        reject(new InsightError());
+                        reject(new InsightError("at least one promise failed"));
                     });
                 }).catch(function () {
-                reject(new InsightError());
+                reject(new InsightError("loadAsync fail"));
             });
         });
     }
@@ -117,7 +136,6 @@ export class ParseZipRoom {
     private createBuildingPromise(dataInZip: JSZip, building: Building): Promise<Building> {
         let t = this;
         return new Promise<Building>(function (fulfill, reject) {
-            let stub2 = building.getLink().substring(2);
             dataInZip.file(building.getLink().substring(2)).async("text")
                 .then(function (roomData: any) {
                     t.parseRooms(roomData, building).then(function (rooms: Room[]) {
@@ -125,7 +143,7 @@ export class ParseZipRoom {
                         fulfill(building);
                     });
                 }).catch(function () {
-                reject(new InsightError());
+                reject(new InsightError("async fail"));
             });
         });
     }
@@ -136,7 +154,6 @@ export class ParseZipRoom {
             let parse5Node: any = parse5.parse(roomData);
             let roomCollector: Array<Promise<Room>> = [];
             t.getAllRooms(parse5Node, roomCollector, building);
-            let stub3 = roomCollector;
             Promise.all(roomCollector).then(function (rooms: Room[]) {
                 let result: Room[] = [];
                 for (let r of rooms) {
@@ -146,9 +163,29 @@ export class ParseZipRoom {
                 }
                 fulfill(result);
             }).catch(function () {
-                reject(new InsightError());
+                reject(new InsightError("at least one promise failed"));
             });
         });
+    }
+
+    private getRoomNumber(currTD: any) {
+        return currTD.childNodes[1].childNodes[0]["value"].trim();
+    }
+
+    private getSeats(currTD: any) {
+        return parseInt(currTD.childNodes[0]["value"].trim(), 10);
+    }
+
+    private getFurniture(currTD: any) {
+        return currTD.childNodes[0]["value"].trim();
+    }
+
+    private getType(currTD: any) {
+        return currTD.childNodes[0]["value"].trim();
+    }
+
+    private getHref(currTD: any) {
+        return currTD.childNodes[1]["attrs"][0]["value"].trim();
     }
 
     private getAllRooms(currNode: any, roomCollector: Array<Promise<Room>>, building: Building): void {
@@ -165,24 +202,24 @@ export class ParseZipRoom {
 
             for (let currTD of currNode.childNodes) {
                 if (currTD.nodeName === "td") {
-                    if (currTD.attrs[0]["value"].match("room-number")) {
-                        roomNumber = currTD.childNodes[1].childNodes[0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("room-number")) {
+                        roomNumber = this.getRoomNumber(currTD);
                         fullName = building.getFullname();
                         shortName = building.getShortname();
                         address = building.getAddress();
                         name = shortName + "_" + roomNumber;
                     }
-                    if (currTD.attrs[0]["value"].match("room-capacity")) {
-                        seats = parseInt(currTD.childNodes[0]["value"].trim(), 10);
+                    if (this.getAttributeValue(currTD).match("room-capacity")) {
+                        seats = this.getSeats(currTD);
                     }
-                    if (currTD.attrs[0]["value"].match("room-furniture")) {
-                        furniture = currTD.childNodes[0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("room-furniture")) {
+                        furniture = this.getFurniture(currTD);
                     }
-                    if (currTD.attrs[0]["value"].match("room-type")) {
-                        type = currTD.childNodes[0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("room-type")) {
+                        type = this.getType(currTD);
                     }
-                    if (currTD.attrs[0]["value"].match("field-nothing")) {
-                        href = currTD.childNodes[1]["attrs"][0]["value"].trim();
+                    if (this.getAttributeValue(currTD).match("field-nothing")) {
+                        href = this.getHref(currTD);
                     }
                 }
             }
@@ -220,18 +257,19 @@ export class ParseZipRoom {
         return new Promise<any>(function (fulfill, reject) {
             let url = "http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address);
             http.get(url, function (response: any) {
-                if (response.code === 404) {
-                    reject(new InsightError());
+                if (!response.error) {
+                    let result: any = null;
+                    response.on("data", function (data: any) {
+                        result = JSON.parse(data);
+                    });
+                    response.on("end", function () {
+                        fulfill(result);
+                    });
+                } else {
+                    reject(new InsightError("error code 404"));
                 }
-                let result: any = null;
-                response.on("data", function (data: any) {
-                    result = JSON.parse(data);
-                });
-                response.on("end", function () {
-                    fulfill(result);
-                });
             }).on("error", function (e: any) {
-                fulfill(null);
+                reject(new InsightError("some error occurred when call get"));
             });
         });
     }
