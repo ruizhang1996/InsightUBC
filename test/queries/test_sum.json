@@ -1,0 +1,37 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": {
+    "WHERE": {
+        "GT": { "courses_avg": 98 }
+    },
+    "OPTIONS": {
+        "COLUMNS": ["courses_id", "sumAvg","overallAvg"],
+        "ORDER": {
+          "dir": "DOWN",
+          "keys": [
+            "overallAvg",
+            "sumAvg"
+          ]
+        }
+    },
+    "TRANSFORMATIONS": {
+        "GROUP": ["courses_id"],
+        "APPLY": [{
+            "overallAvg": {
+                "AVG": "courses_avg"
+            }
+            },
+            {
+                "sumAvg": {
+                    "SUM": "courses_avg"
+                }
+        }]
+    }
+},
+
+
+    "isQueryValid": true,
+    "result":[{"courses_id":"527","sumAvg":199.56,"overallAvg":99.78},{"courses_id":"574","sumAvg":99.19,"overallAvg":99.19},{"courses_id":"300","sumAvg":197.96,"overallAvg":98.98},{"courses_id":"541","sumAvg":197.5,"overallAvg":98.75},
+      {"courses_id":"449","sumAvg":493.48,"overallAvg":98.7},{"courses_id":"578","sumAvg":394.16,"overallAvg":98.54},{"courses_id":"509","sumAvg":393.84,"overallAvg":98.46},{"courses_id":"519","sumAvg":196.9,"overallAvg":98.45},
+      {"courses_id":"421","sumAvg":295.14,"overallAvg":98.38}]
+  }

@@ -358,9 +358,9 @@ export default class InsightFacade implements IInsightFacade {
                 } else if (token === "SUM") {
                     if (isNumber(toCompute[0])) {
                         const numToCompute = toCompute as number[];
-                        let sum = new Decimal(0);
+                        let sum = 0;
                         for (const e of numToCompute) {
-                            sum = sum.add(new Decimal(e));
+                            sum += e;
                         }
                         res = Number(sum.toFixed(2));
                     } else {
