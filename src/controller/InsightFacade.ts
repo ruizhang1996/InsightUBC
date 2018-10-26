@@ -33,7 +33,6 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
-        let t = this;
         if (!(kind === InsightDatasetKind.Courses || kind === InsightDatasetKind.Rooms)) {
             return Promise.reject(new InsightError("Kind is invalid"));
         }
@@ -43,7 +42,7 @@ export default class InsightFacade implements IInsightFacade {
         if (content === null || content === undefined || content === "") {
             return Promise.reject(new InsightError("content is invalid"));
         }
-        if (t.idArray.includes(id)) {
+        if (this.idArray.includes(id)) {
             return Promise.reject(new InsightError("content already exists"));
         }
         if (kind === InsightDatasetKind.Courses) {

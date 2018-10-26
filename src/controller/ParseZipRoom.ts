@@ -26,7 +26,7 @@ export class ParseZipRoom {
                         t.parseIndexHTM(indexData).then(function (buildings: Building[]) {
                             fulfill(buildings);
                         }).catch(function (e) {
-                            reject(new InsightError("parseIndexHTM fail"));
+                            reject(new InsightError("parse IndexHTM fail"));
                         });
                     }).catch(function (e) {
                         reject(new InsightError("async fail"));
@@ -62,23 +62,76 @@ export class ParseZipRoom {
     }
 
     private getAttributeValue(currTD: any) {
-        return currTD.attrs[0]["value"];
+        if (currTD.attrs) {
+            for (let a of currTD.attrs) {
+                if (a["value"]) {
+                    return a["value"];
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getFullname(currTD: any) {
-        return currTD.childNodes[1].childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a.childNodes) {
+                    for (let b of a.childNodes) {
+                        if (b["value"]) {
+                            return b["value"].trim();
+                        }
+                    }
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getShortname(currTD: any) {
-        return currTD.childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return a["value"].trim();
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getAddress(currTD: any) {
-        return currTD.childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return a["value"].trim();
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getLink(currTD: any) {
-        return currTD.childNodes[1]["attrs"][0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["attrs"]) {
+                    for (let b of a["attrs"]) {
+                        if (b["value"]) {
+                            return b["value"].trim();
+                        }
+                    }
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
@@ -87,6 +140,9 @@ export class ParseZipRoom {
             let shortName: string = null;
             let address: string = null;
             let link: string = null;
+            if (currNode.childNodes === undefined || currNode.childNodes === null) {
+                return;
+            }
             for (let currTD of currNode.childNodes) {
                 if (currTD.nodeName === "td") {
                     if (this.getAttributeValue(currTD).match("title")) {
@@ -169,23 +225,76 @@ export class ParseZipRoom {
     }
 
     private getRoomNumber(currTD: any) {
-        return currTD.childNodes[1].childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a.childNodes) {
+                    for (let b of a.childNodes) {
+                        if (b["value"]) {
+                            return b["value"].trim();
+                        }
+                    }
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getSeats(currTD: any) {
-        return parseInt(currTD.childNodes[0]["value"].trim(), 10);
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return parseInt(a["value"].trim(), 10);
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getFurniture(currTD: any) {
-        return currTD.childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return a["value"].trim();
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getType(currTD: any) {
-        return currTD.childNodes[0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return a["value"].trim();
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getHref(currTD: any) {
-        return currTD.childNodes[1]["attrs"][0]["value"].trim();
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["attrs"]) {
+                    for (let b of a["attrs"]) {
+                        if (b["value"]) {
+                            return b["value"].trim();
+                        }
+                    }
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
     }
 
     private getAllRooms(currNode: any, roomCollector: Array<Promise<Room>>, building: Building): void {
@@ -199,7 +308,9 @@ export class ParseZipRoom {
             let type: string = null;
             let furniture: string = null;
             let href: string = null;
-
+            if (currNode.childNodes === undefined || currNode.childNodes === null) {
+                return;
+            }
             for (let currTD of currNode.childNodes) {
                 if (currTD.nodeName === "td") {
                     if (this.getAttributeValue(currTD).match("room-number")) {
