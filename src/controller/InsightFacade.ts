@@ -291,24 +291,6 @@ export default class InsightFacade implements IInsightFacade {
                 dataDict[a].push(data);
             }
         }
-        const groupedData = _.groupBy(dataset, (data) => {
-            let a: string = "";
-            for (const i of transformation.GROUP) {
-                if (! i.includes("_")) {
-                    throw new Error("no _ in group key");
-                }
-                const gid = i.split("_")[0];
-                if (gid !== id) {
-                    throw new Error("wrong dataset id in group key");
-                }
-                const key = i.split("_")[1];
-                if (data[key] === undefined) {
-                    throw new Error("invalid key in group key");
-                }
-                a = a + (data[key] as string);
-            }
-            return a;
-        });
         const rules = transformation.APPLY;
         if (Object.keys(rules).length < 1) {
             throw new Error("at least one rule in apply");
