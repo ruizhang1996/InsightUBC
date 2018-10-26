@@ -3,11 +3,13 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFou
 import {ParseZip} from "./ParseZip";
 import {ParseZipRoom} from "./ParseZipRoom";
 import {Course} from "./Course";
-import {InsightFilter, InsightOptions} from "./Query";
+import {InsightFilter, InsightOptions, InsightTransformation} from "./Query";
 import {isNumber, isString} from "util";
 import {existsSync} from "fs";
 import {Building} from "./Building";
-
+import {Decimal} from "decimal.js";
+import _ = require("lodash");
+import {Room} from "./Room";
 /**
  * This is the main programmatic entry point for the project.
  * Method documentation is in IInsightFacade
@@ -120,17 +122,35 @@ export default class InsightFacade implements IInsightFacade {
     }
     private produceFilteredSections(courseSet: any[], filter: InsightFilter, id: string): any[] {
         const filteredDataset: any[] = [];
-        if (Object.keys(filter).length === 0) {
-            for (const data of courseSet) {
-                for (const sec of data.sections) {
-                    filteredDataset.push(sec);
+        if (courseSet[0] instanceof Building) {
+            if (Object.keys(filter).length === 0) {
+                for (const data of courseSet) {
+                    for (const sec of data.rooms) {
+                        filteredDataset.push(sec);
+                    }
+                }
+            } else {
+                for (const data of courseSet) {
+                    for (const sec of data.rooms) {
+                        if (this.isSatisfied(filter, sec, id)) {
+                            filteredDataset.push(sec);
+                        }
+                    }
                 }
             }
         } else {
-            for (const data of courseSet) {
-                for (const sec of data.sections) {
-                    if (this.isSatisfied(filter, sec, id)) {
+            if (Object.keys(filter).length === 0) {
+                for (const data of courseSet) {
+                    for (const sec of data.sections) {
                         filteredDataset.push(sec);
+                    }
+                }
+            } else {
+                for (const data of courseSet) {
+                    for (const sec of data.sections) {
+                        if (this.isSatisfied(filter, sec, id)) {
+                            filteredDataset.push(sec);
+                        }
                     }
                 }
             }
@@ -244,40 +264,112 @@ export default class InsightFacade implements IInsightFacade {
             throw new Error("Invalid filter name.");
         }
     }
-    private showColumns(sections: any[], columns: string[]): any[] {
-        const reducedDataset: any[] = [];
-        for (const data of sections) {
-            const entry: {[key: string]: any } = {};
-            for (const ID_KEY of columns) {
-                let key;
-                if (ID_KEY.includes("_")) {
-                    key = ID_KEY.split("_")[1];
-                } else {
-                    throw new Error("no _ in key");
+    private transform(dataset: any[], id: string, transformation: InsightTransformation): any [] {
+        const transformedDataset = [];
+        if (Object.keys(transformation.GROUP).length < 1) {
+            throw new Error("at least one key in Group");
+        }
+        const groupedData = _.groupBy(dataset, (data) => {
+            let a: string = "";
+            for (const i of transformation.GROUP) {
+                if (! i.includes("_")) {
+                    throw new Error("no _ in group key");
                 }
-                if (data.hasOwnProperty(key)) {
-                    entry[ID_KEY] = data[key];
-                } else {
-                    throw new Error("Invalid Key.");
+                const gid = i.split("_")[0];
+                if (gid !== id) {
+                    throw new Error("wrong dataset id in group key");
                 }
+                const key = i.split("_")[1];
+                if (data[key] === undefined) {
+                    throw new Error("invalid key in group key");
+                }
+                a = a + (data[key] as string);
             }
-            reducedDataset.push(entry);
+            return a;
+        });
+        const rules = transformation.APPLY;
+        if (Object.keys(rules).length < 1) {
+            throw new Error("at least one rule in apply");
         }
-        return reducedDataset;
-    }
-    private sortResult(result: any[], order: any, columns: string[]): any[] {
-        if (!columns.includes(order)) {
-            throw new InsightError("order is not in the column");
-        } else {
-            result.sort((left, right): any => {
-                if (left[order] > right[order]) {
-                    return 1;
-                } else if (left[order] < right[order]) {
-                    return -1;
+        for (let k in groupedData) {
+            const sections = groupedData [k];
+            const group: {[key: string]: any} = {};
+            for (const g of transformation.GROUP) {
+                const key = g.split("_")[1];
+                group[key] = sections[0][key];
+            }
+            for ( const rule of rules) {
+                const applyKey = Object.keys(rule)[0];
+                if (applyKey.length < 1) {
+                    throw new Error("at least one character in applykey");
                 }
-            });
-            return result;
+                if (applyKey.includes("_")) {
+                    throw new Error("there should not be _ in applykey");
+                }
+                if (group[applyKey]) {
+                    throw new Error("duplicate applykeys in two rules");
+                }
+                const token = Object.keys(rule[applyKey])[0];
+                const ID_KEY = rule[applyKey][token];
+                if (! ID_KEY.includes("_")) {
+                    throw new Error("no _ in key in token");
+                }
+                if (ID_KEY.split("_")[0] !== id) {
+                    throw new Error("wrong dataset id in token key");
+                }
+                const key = ID_KEY.split("_")[1];
+                const toCompute: any[] = [];
+                for (const section of sections) {
+                    toCompute.push(section[key]);
+                }
+                let value: number;
+                if (token === "MAX") {
+                    if (isNumber(toCompute[0])) {
+                        const numToCompute = toCompute as number[];
+                        value = Math.max.apply(null, numToCompute);
+                    } else {
+                        throw new Error("not a number in max");
+                    }
+                } else if (token === "MIN") {
+                    if (isNumber(toCompute[0])) {
+                        const numToCompute = toCompute as number[];
+                        value = Math.min.apply(null, numToCompute);
+                    } else {
+                        throw new Error("not a number in min");
+                    }
+                } else if (token === "AVG") {
+                    if (isNumber(toCompute[0])) {
+                        const numToCompute = toCompute as number[];
+                        let sum = new Decimal(0);
+                        for (const e of numToCompute) {
+                            sum.add(new Decimal(e));
+                        }
+                        const avg = sum.toNumber() / numToCompute.length;
+                        value = Number(avg.toFixed(2));
+                    } else {
+                        throw new Error("not a number in avg");
+                    }
+                } else if (token === "COUNT") {
+                    value = new Set(toCompute).size;
+                } else if (token === "SUM") {
+                    if (isNumber(toCompute[0])) {
+                        const numToCompute = toCompute as number[];
+                        let sum = new Decimal(0);
+                        for (const e of numToCompute) {
+                            sum.add(new Decimal(e));
+                        }
+                        value = Number(sum.toFixed(2));
+                    } else {
+                        throw new Error("not a number in sum");
+                    }
+                } else {
+                    throw new Error("invalid token");
+                }
+                group[applyKey] = value;
+            }
+            transformedDataset.push(group);
         }
+        return transformedDataset;
     }
     public performQuery(query: any): Promise <any[]> {
         return new Promise<any[]>((fulfill, reject) => {
@@ -291,6 +383,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (Object.keys(columns).length === 0) {
                     throw new Error("empty column");
                 }
+                const transformation: InsightTransformation = query.TRANSFORMATIONS;
                 const order = options.ORDER;
                 if (!columns[0].includes("_")) {
                     throw new Error("no _ in column");
@@ -307,9 +400,109 @@ export default class InsightFacade implements IInsightFacade {
                 if (sections.length > 5000) {
                     throw new Error("too many result");
                 }
-                let result = this.showColumns(sections, columns);
+                let groups: any[] = [];
+                if (transformation) {
+                    if (Object.keys(transformation).length !== 2) {
+                        throw new Error("invalid transofrmation");
+                    }
+                    groups = this.transform(sections, id, transformation);
+                }
+                let result: any[] = [];
+                if (transformation) {
+                    for (const group of groups) {
+                        const newGroup: {[key: string]: any } = {};
+                        for (const ID_KEY of columns) {
+                            if (this.showsUpinTransform(ID_KEY, transformation) ) {
+                                let key;
+                                if (! ID_KEY.includes("_")) {
+                                    key = ID_KEY;
+                                } else {
+                                    key = ID_KEY.split("_")[1];
+                                }
+                                if ( ! group.hasOwnProperty(key)) {
+                                    throw new Error("Invalid Key.");
+                                }
+                                newGroup[ID_KEY] = group[key];
+                            } else {
+                                throw new Error("colomn is not in group or applykey");
+                            }
+                        }
+                        result.push(newGroup);
+                    }
+                } else {
+                    for (const sec of sections) {
+                        const newGroup: {[key: string]: any } = {};
+                        for (const ID_KEY of columns) {
+                            if (! ID_KEY.includes("_")) {
+                                throw new Error("no _ in key");
+                            }
+                            const key = ID_KEY.split("_")[1];
+                            if ( ! sec.hasOwnProperty(key)) {
+                                throw new Error("Invalid Key.");
+                            }
+                            newGroup[ID_KEY] = sec[key];
+                        }
+                        result.push(newGroup);
+                    }
+                }
                 if (order) {
-                    result = this.sortResult(result, order, columns);
+                    if (isString(order)) {
+                        if (!columns.includes(order)) {
+                            throw new InsightError("order is not in the column");
+                        }
+                        result.sort((a, b) => {
+                            if (a[order] < b[order]) {
+                                return -1;
+                            }
+                            if (a[order] > b[order]) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                    } else {
+                        const applykeys = order.keys;
+                        if (applykeys.length < 1) {
+                            throw new Error("at least 1 key in order key");
+                        }
+                        const dir = order.dir;
+                        if (dir.length === 0) {
+                            throw new Error("empty error");
+                        }
+                        function sortHelper1(a: any, b: any , keys: string[], index: number): number {
+                            if (a[keys[index]] < b[keys[index]]) {
+                                return -1;
+                            }
+                            if (a[keys[index]] > b[keys[index]]) {
+                                return 1;
+                            }
+                            if (index >= applykeys.length - 1 ) {
+                                return 0;
+                            }
+                            return sortHelper1(a, b, keys, index + 1);
+                        }
+                        function sortHelper2(a: any, b: any , keys: string[], index: number): number {
+                            if (a[keys[index]] < b[keys[index]]) {
+                                return 1;
+                            }
+                            if (a[keys[index]] > b[keys[index]]) {
+                                return -1;
+                            }
+                            if (index >= applykeys.length - 1 ) {
+                                return 0;
+                            }
+                            return sortHelper2(a, b, keys, index + 1);
+                        }
+                        result.sort((a, b) => {
+                            if (dir === "UP") {
+                                return sortHelper1(a, b, applykeys, 0);
+                            }
+                            if (dir === "DOWN") {
+                                return sortHelper2(a, b, applykeys, 0);
+                            }
+                            throw  new Error("invalid dir");
+                        });
+                    }
+
                 }
                 fulfill(result);
             } catch (err) {
@@ -318,7 +511,17 @@ export default class InsightFacade implements IInsightFacade {
             }
         });
     }
-
+    private  showsUpinTransform(ID_KEY: string, transformation: InsightTransformation): boolean {
+        if (transformation.GROUP.includes(ID_KEY)) {
+            return true;
+        }
+        for (const rule of transformation.APPLY) {
+            if (Object.keys(rule).includes(ID_KEY)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public listDatasets(): Promise<InsightDataset[]> {
         let t = this;
         let result: InsightDataset[] = [];
