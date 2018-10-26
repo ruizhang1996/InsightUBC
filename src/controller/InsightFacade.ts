@@ -268,6 +268,29 @@ export default class InsightFacade implements IInsightFacade {
         if (Object.keys(transformation.GROUP).length < 1) {
             throw new Error("at least one key in Group");
         }
+        let dataDict: {[key: string]: any} = {};
+        for (const data of dataset) {
+            let a: string = "";
+            for (const i of transformation.GROUP) {
+                if (! i.includes("_")) {
+                    throw new Error("no _ in group key");
+                }
+                const gid = i.split("_")[0];
+                if (gid !== id) {
+                    throw new Error("wrong dataset id in group key");
+                }
+                const key = i.split("_")[1];
+                if (data[key] === undefined) {
+                    throw new Error("invalid key in group key");
+                }
+                a = a + (data[key] as string);
+            }
+            if (dataDict[a] === undefined) {
+                dataDict[a] = [data];
+            } else {
+                dataDict[a].push(data);
+            }
+        }
         const groupedData = _.groupBy(dataset, (data) => {
             let a: string = "";
             for (const i of transformation.GROUP) {
@@ -290,8 +313,8 @@ export default class InsightFacade implements IInsightFacade {
         if (Object.keys(rules).length < 1) {
             throw new Error("at least one rule in apply");
         }
-        for (let k in groupedData) {
-            const sections = groupedData [k];
+        for (let k in dataDict) {
+            const sections = dataDict [k];
             const group: {[key: string]: any} = {};
             for (const g of transformation.GROUP) {
                 const key = g.split("_")[1];
