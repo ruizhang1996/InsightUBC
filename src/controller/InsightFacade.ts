@@ -326,18 +326,18 @@ export default class InsightFacade implements IInsightFacade {
                 for (const section of sections) {
                     toCompute.push(section[key]);
                 }
-                let value: number;
+                let res: number;
                 if (token === "MAX") {
                     if (isNumber(toCompute[0])) {
                         const numToCompute = toCompute as number[];
-                        value = Math.max.apply(null, numToCompute);
+                        res = Math.max.apply(null, numToCompute);
                     } else {
                         throw new Error("not a number in max");
                     }
                 } else if (token === "MIN") {
                     if (isNumber(toCompute[0])) {
                         const numToCompute = toCompute as number[];
-                        value = Math.min.apply(null, numToCompute);
+                        res = Math.min.apply(null, numToCompute);
                     } else {
                         throw new Error("not a number in min");
                     }
@@ -346,30 +346,30 @@ export default class InsightFacade implements IInsightFacade {
                         const numToCompute = toCompute as number[];
                         let sum = new Decimal(0);
                         for (const e of numToCompute) {
-                            sum.add(new Decimal(e));
+                            sum = sum.add(new Decimal(e));
                         }
-                        const avg = sum.toNumber() / numToCompute.length;
-                        value = Number(avg.toFixed(2));
+                        let avg = sum.toNumber() / numToCompute.length;
+                        res = Number(avg.toFixed(2));
                     } else {
                         throw new Error("not a number in avg");
                     }
                 } else if (token === "COUNT") {
-                    value = new Set(toCompute).size;
+                    res = new Set(toCompute).size;
                 } else if (token === "SUM") {
                     if (isNumber(toCompute[0])) {
                         const numToCompute = toCompute as number[];
                         let sum = new Decimal(0);
                         for (const e of numToCompute) {
-                            sum.add(new Decimal(e));
+                            sum = sum.add(new Decimal(e));
                         }
-                        value = Number(sum.toFixed(2));
+                        res = Number(sum.toFixed(2));
                     } else {
                         throw new Error("not a number in sum");
                     }
                 } else {
                     throw new Error("invalid token");
                 }
-                group[applyKey] = value;
+                group[applyKey] = res;
             }
             transformedDataset.push(group);
         }
@@ -423,9 +423,6 @@ export default class InsightFacade implements IInsightFacade {
                                 } else {
                                     key = ID_KEY.split("_")[1];
                                 }
-                                if ( ! group.hasOwnProperty(key)) {
-                                    throw new Error("Invalid Key.");
-                                }
                                 newGroup[ID_KEY] = group[key];
                             } else {
                                 throw new Error("colomn is not in group or applykey");
@@ -441,7 +438,7 @@ export default class InsightFacade implements IInsightFacade {
                                 throw new Error("no _ in key");
                             }
                             const key = ID_KEY.split("_")[1];
-                            if ( ! sec.hasOwnProperty(key)) {
+                            if ( sec[key] === undefined) {
                                 throw new Error("Invalid Key.");
                             }
                             newGroup[ID_KEY] = sec[key];
@@ -465,12 +462,17 @@ export default class InsightFacade implements IInsightFacade {
                         });
                     } else {
                         const applykeys = order.keys;
+                        for (const k of applykeys) {
+                            if (! columns.includes(k)) {
+                                throw new Error("keys in order dir key should be in column");
+                            }
+                        }
                         if (applykeys.length < 1) {
                             throw new Error("at least 1 key in order key");
                         }
                         const dir = order.dir;
-                        if (dir.length === 0) {
-                            throw new Error("empty error");
+                        if (dir === undefined) {
+                            throw new Error("missing dir");
                         }
                         function sortHelper1(a: any, b: any , keys: string[], index: number): number {
                             if (a[keys[index]] < b[keys[index]]) {

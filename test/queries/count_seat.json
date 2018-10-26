@@ -1,0 +1,44 @@
+{
+    "title": "empty filter room",
+    "query":
+    {
+          "WHERE": {
+                  "AND": [{
+                "IS": {
+                    "rooms_furniture": "*Tables*"
+                }
+            }, {
+                "GT": {
+                    "rooms_seats": 300
+                }
+            }]
+          },
+          "OPTIONS": {
+            "COLUMNS": [
+              "rooms_shortname",
+              "sumseats"
+            ],
+            "ORDER": {
+              "dir": "UP",
+              "keys": [
+                "sumseats"
+              ]
+            }
+          },
+          "TRANSFORMATIONS": {
+            "GROUP": [
+              "rooms_shortname"
+            ],
+            "APPLY": [
+              {
+                "sumseats": {
+                  "COUNT": "rooms_seats"
+                }
+              }
+            ]
+          }
+
+    },
+    "isQueryValid": true,
+    "result":[{"rooms_shortname":"HEBB","sumseats":1},{"rooms_shortname":"LSC","sumseats":1},{"rooms_shortname":"OSBO","sumseats":1}]
+}
