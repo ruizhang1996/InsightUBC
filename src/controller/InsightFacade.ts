@@ -33,6 +33,7 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
+        let t = this;
         if (!(kind === InsightDatasetKind.Courses || kind === InsightDatasetKind.Rooms)) {
             return Promise.reject(new InsightError("Kind is invalid"));
         }
@@ -46,42 +47,32 @@ export default class InsightFacade implements IInsightFacade {
             return Promise.reject(new InsightError("content already exists"));
         }
         if (kind === InsightDatasetKind.Courses) {
-            return this.parseCourse(id, content);
+            this.parser = new ParseZip();
+            return new Promise(function (fulfill, reject) {
+                t.parser.parseZip(content).then(function (courses: Course[]) {
+                    t.storeData(id, courses).then(function (result: string[]) {
+                        fulfill(result);
+                    }).catch(function () {
+                        reject(new InsightError());
+                    });
+                }).catch(function () {
+                    reject(new InsightError());
+                });
+            });
         } else {
-            return this.parseRoom(id, content);
+            this.parser = new ParseZipRoom();
+            return new Promise(function (fulfill, reject) {
+                t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
+                    t.storeData(id, buildings).then(function (result: string[]) {
+                        fulfill(result);
+                    }).catch(function () {
+                        reject(new InsightError());
+                    });
+                }).catch(function () {
+                    reject(new InsightError());
+                });
+            });
         }
-    }
-
-    private parseCourse(id: string, content: string): Promise<string[]> {
-        let t = this;
-        this.parser = new ParseZip();
-        return new Promise(function (fulfill, reject) {
-            t.parser.parseZip(content).then(function (courses: Course[]) {
-                t.storeData(id, courses).then(function (result: string[]) {
-                    fulfill(result);
-                }).catch(function () {
-                    reject(new InsightError());
-                });
-            }).catch(function () {
-                reject(new InsightError());
-            });
-        });
-    }
-
-    private parseRoom(id: string, content: string): Promise<string[]> {
-        let t = this;
-        this.parser = new ParseZipRoom();
-        return new Promise(function (fulfill, reject) {
-            t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
-                t.storeData(id, buildings).then(function (result: string[]) {
-                    fulfill(result);
-                }).catch(function () {
-                    reject(new InsightError());
-                });
-            }).catch(function () {
-                reject(new InsightError());
-            });
-        });
     }
 
     private storeData(id: string, data: any[]): Promise<string[]> {

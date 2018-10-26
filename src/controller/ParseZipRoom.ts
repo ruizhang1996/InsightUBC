@@ -198,6 +198,8 @@ export class ParseZipRoom {
                     t.parseRooms(roomData, building).then(function (rooms: Room[]) {
                         building.setRooms(rooms);
                         fulfill(building);
+                    }).catch(function () {
+                        reject(new InsightError("room fail"));
                     });
                 }).catch(function () {
                 reject(new InsightError("async fail"));
