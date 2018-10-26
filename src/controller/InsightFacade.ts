@@ -8,14 +8,14 @@ import {isNumber, isString} from "util";
 import {existsSync} from "fs";
 import {Building} from "./Building";
 import {Decimal} from "decimal.js";
-import _ = require("lodash");
 import {Room} from "./Room";
+import {Section} from "./Section";
+import _ = require("lodash");
 /**
  * This is the main programmatic entry point for the project.
  * Method documentation is in IInsightFacade
  *
  */
-
 let fs = require("fs");
 let directory =  __dirname + "/../../data";
 
