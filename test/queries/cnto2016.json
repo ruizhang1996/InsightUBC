@@ -25,5 +25,5 @@
 
 
     "isQueryValid": true,
-    "result":[{"courses_id":"301"},{"courses_id":"301"},{"courses_id":"301"},{"courses_id":"303"},{"courses_id":"303"}]
+    "result":[]
   }
