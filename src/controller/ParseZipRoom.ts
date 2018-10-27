@@ -135,7 +135,7 @@ export class ParseZipRoom {
     }
 
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
-        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
+        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && currNode.attrs &&
             (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
             let fullName: string = null;
             let shortName: string = null;
@@ -301,7 +301,7 @@ export class ParseZipRoom {
     }
 
     private getAllRooms(currNode: any, roomCollector: Array<Promise<Room>>, building: Building): void {
-        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
+        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && currNode.attrs &&
             (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
             let fullName: string = null;
             let shortName: string = null;
