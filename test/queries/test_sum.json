@@ -5,25 +5,20 @@
         "GT": { "courses_avg": 98 }
     },
     "OPTIONS": {
-        "COLUMNS": ["courses_id", "sumAvg","overallAvg"],
+        "COLUMNS": ["courses_id", "sumYear"],
         "ORDER": {
           "dir": "DOWN",
           "keys": [
-            "overallAvg",
-            "sumAvg"
+            "sumYear"
           ]
         }
     },
     "TRANSFORMATIONS": {
         "GROUP": ["courses_id"],
-        "APPLY": [{
-            "overallAvg": {
-                "AVG": "courses_avg"
-            }
-            },
+        "APPLY": [
             {
-                "sumAvg": {
-                    "SUM": "courses_avg"
+                "sumYear": {
+                    "SUM": "courses_year"
                 }
         }]
     }
@@ -31,7 +26,6 @@
 
 
     "isQueryValid": true,
-    "result":[{"courses_id":"527","sumAvg":199.56,"overallAvg":99.78},{"courses_id":"574","sumAvg":99.19,"overallAvg":99.19},{"courses_id":"300","sumAvg":197.96,"overallAvg":98.98},{"courses_id":"541","sumAvg":197.5,"overallAvg":98.75},
-      {"courses_id":"449","sumAvg":493.48,"overallAvg":98.7},{"courses_id":"578","sumAvg":394.16,"overallAvg":98.54},{"courses_id":"509","sumAvg":393.84,"overallAvg":98.46},{"courses_id":"519","sumAvg":196.9,"overallAvg":98.45},
-      {"courses_id":"421","sumAvg":295.14,"overallAvg":98.38}]
+    "result":[{"courses_id":"449","sumYear":9838},{"courses_id":"509","sumYear":7826},{"courses_id":"578","sumYear":7823},{"courses_id":"421","sumYear":5918},{"courses_id":"300","sumYear":3915},
+      {"courses_id":"519","sumYear":3911},{"courses_id":"527","sumYear":3909},{"courses_id":"541","sumYear":3909},{"courses_id":"574","sumYear":2012}]
   }
