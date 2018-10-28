@@ -400,15 +400,15 @@ export default class InsightFacade implements IInsightFacade {
                     throw new Error("invalid id");
                 }
                 sections = this.produceFilteredSections(courseDataset, filter, id);
-                if (sections.length > 5000) {
-                    throw new Error("too many result");
-                }
                 let groups: any[] = [];
                 if (transformation) {
                     groups = this.transform(sections, id, transformation);
                 }
                 let result: any[] = [];
                 if (transformation) {
+                    if (groups.length > 5000) {
+                        throw new Error("too many result");
+                    }
                     for (const group of groups) {
                         const newGroup: {[key: string]: any } = {};
                         for (const ID_KEY of columns) {
@@ -427,6 +427,9 @@ export default class InsightFacade implements IInsightFacade {
                         result.push(newGroup);
                     }
                 } else {
+                    if (sections.length > 5000) {
+                        throw new Error("too many result");
+                    }
                     for (const sec of sections) {
                         const newGroup: {[key: string]: any } = {};
                         for (const ID_KEY of columns) {
