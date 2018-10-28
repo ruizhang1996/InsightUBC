@@ -283,9 +283,6 @@ export default class InsightFacade implements IInsightFacade {
             }
         }
         const rules = transformation.APPLY;
-        if (Object.keys(rules).length < 1) {
-            throw new Error("at least one rule in apply");
-        }
         for (let k in dataDict) {
             const sections = dataDict [k];
             const group: {[key: string]: any} = {};
@@ -315,6 +312,9 @@ export default class InsightFacade implements IInsightFacade {
                 const key = ID_KEY.split("_")[1];
                 const toCompute: any[] = [];
                 for (const section of sections) {
+                    if (!section.hasOwnProperty(key)) {
+                        throw new Error("invalid key in token key");
+                    }
                     toCompute.push(section[key]);
                 }
                 let res: number;
@@ -349,9 +349,9 @@ export default class InsightFacade implements IInsightFacade {
                 } else if (token === "SUM") {
                     if (isNumber(toCompute[0])) {
                         const numToCompute = toCompute as number[];
-                        let sum = 0;
+                        let sum: number = 0;
                         for (const e of numToCompute) {
-                            sum += e;
+                            sum = sum + e;
                         }
                         res = Number(sum.toFixed(2));
                     } else {
