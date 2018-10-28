@@ -1,0 +1,9 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+
+
+    },
+    "isQueryValid": false,
+    "result": "all empty"
+}

@@ -1,0 +1,40 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        },
+        "WHERE": {
+            "OR":[
+                    {
+                        "GT": {
+                            "courses_avg":99.5
+                        }
+                    },
+                    {
+                        "GT": {
+                            "courses_avg":110
+                        }
+                    },
+                    {
+                        "GT": {
+                            "courses_avg":100
+                        }
+                    }
+            ]
+
+        }
+    },
+    "isQueryValid": true,
+    "result": [
+        {"courses_dept":"math","courses_id":"527","courses_avg":99.78},
+        {"courses_dept":"math","courses_id":"527","courses_avg":99.78}
+    ]
+
+
+}

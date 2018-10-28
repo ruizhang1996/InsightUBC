@@ -1,0 +1,24 @@
+{
+    "title": "Malformed query",
+    "query": {
+        "WHERE": {
+            "GT": {
+                "courses_pass":100
+            },
+            "IS": {
+                "courses_dept": "cpsc"
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+            "result":"Query is malformed"
+
+
+}

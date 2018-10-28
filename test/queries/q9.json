@@ -1,0 +1,54 @@
+{
+    "title": "A complex test",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "NOT": {
+                        "IS": {
+                            "courses_instructor": ""
+                        }
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_title":""
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_dept": "stat"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_avg": 80
+                    }
+                },
+                {
+                    "LT": {
+                        "courses_pass": 10
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg",
+                "courses_id",
+                "courses_audit"
+            ],
+            "ORDER": "courses_audit"
+        }
+    },
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "stat", "courses_avg": 92 , "courses_id": "560", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 81.75 , "courses_id": "561", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 85.5 , "courses_id": "561", "courses_audit": 0 },
+                { "courses_dept": "stat", "courses_avg": 88.83 , "courses_id": "561", "courses_audit": 0 }
+            ]
+
+
+}

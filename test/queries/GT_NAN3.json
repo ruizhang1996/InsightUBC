@@ -1,0 +1,31 @@
+{
+    "title": "SELECT dept, avg WHERE avg < 0",
+    "query": {
+        "WHERE": {
+            "AND":[
+
+                    {
+                        "IS":{
+                            "courses_dept": "math"
+                        }
+                    },
+                    {
+                        "GT": {
+                            "courses_dept":"math"
+                        }
+                    }
+            ]
+
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "EQ NAN"
+}

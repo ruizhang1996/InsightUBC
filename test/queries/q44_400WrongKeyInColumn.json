@@ -1,0 +1,36 @@
+{
+    "title": "SELECT dept, avg WHERE avg = 0",
+    "query": {
+        "WHERE": {
+            "AND":[
+                {
+                    "EQ": {
+                        "courses_avg":0
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_dept": "cpsc"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_chinese",
+                "courses_id",
+                "courses_avg",
+                "courses_instructor",
+                "courses_title",
+                "courses_pass",
+                "courses_fail",
+                "courses_audit",
+                "courses_uuid"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+    "result": "wrong key in column"
+}

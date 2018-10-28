@@ -1,0 +1,26 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": { "WHERE": {
+            "AND":[
+                    {
+                        "IS":{
+                            "courses_dept": "cpsc"
+                        }
+                    },
+                    {
+                        "GT": {
+                            "courses_avg":94
+                        }
+                    }
+            ]
+
+        },
+
+        "OPTIONS": {
+            "COLUMNS": [ ]}
+            },
+
+
+    "isQueryValid": false,
+    "result": "has column but no order"
+}

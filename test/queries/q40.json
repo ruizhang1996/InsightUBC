@@ -1,0 +1,33 @@
+{
+    "title": "Test *io*",
+    "query": {
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_dept": "*io*"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_fail": 200
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": true,
+            "result":[
+                {"courses_dept": "biol", "courses_avg": 64.73},
+                {"courses_dept": "biol", "courses_avg": 68.77}
+            ]
+
+
+}

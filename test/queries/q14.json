@@ -1,0 +1,18 @@
+{
+    "title": "Missing COLUMN",
+    "query": {
+        "WHERE": {
+            "GT": {
+                "courses_avg":90
+            }
+        },
+        "OPTIONS": {
+            "ORDER": "courses_avg"
+
+        }
+    },
+    "isQueryValid": false,
+            "result":"IOptions format is wrong"
+
+
+}

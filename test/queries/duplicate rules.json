@@ -1,0 +1,48 @@
+{
+    "title": "empty filter room",
+    "query":
+    {
+          "WHERE": {
+                  "AND": [{
+                "IS": {
+                    "rooms_furniture": "*Tables*"
+                }
+            }, {
+                "GT": {
+                    "rooms_seats": 300
+                }
+            }]
+          },
+          "OPTIONS": {
+            "COLUMNS": [
+              "rooms_shortname"
+            ],
+            "ORDER": {
+              "dir": "UP",
+              "keys": [
+                "rooms_shortname"
+              ]
+            }
+          },
+          "TRANSFORMATIONS": {
+            "GROUP": [
+              "rooms_shortname"
+            ],
+            "APPLY": [
+              {
+                "avgseats": {
+                  "AVG": "rooms_seats"
+                }
+              },
+              {
+                "avgseats": {
+                  "AVG": "rooms_seats"
+                }
+              }
+            ]
+          }
+
+    },
+    "isQueryValid": false,
+     "result":"duplicate rules"
+}

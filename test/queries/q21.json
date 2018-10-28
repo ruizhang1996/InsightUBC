@@ -1,0 +1,20 @@
+{
+    "title": "Order key not in columns",
+    "query": {
+        "WHERE": {
+            "GT": {
+                "courses_pass":100
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "isQueryValid": false,
+            "result":"Order key needs to be included in columns"
+
+
+}

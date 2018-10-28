@@ -1,0 +1,32 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": {
+    "WHERE": {
+        "GT": { "courses_avg": 98 }
+    },
+    "OPTIONS": {
+        "COLUMNS": ["courses_dept","courses_id", "sumpass"],
+        "ORDER": {
+          "dir": "DOWN",
+          "keys": [
+            "sumpass"
+          ]
+        }
+    },
+    "TRANSFORMATIONS": {
+        "GROUP": ["courses_dept","courses_id"],
+        "APPLY": [
+            {
+                "sumpass": {
+                    "SUM": "courses_pass"
+                }
+        }]
+    }
+},
+
+
+    "isQueryValid": true,
+    "result":[{"courses_dept":"spph","courses_id":"300","sumpass":164},{"courses_dept":"epse","courses_id":"449","sumpass":107},{"courses_dept":"nurs","courses_id":"509","sumpass":56},
+      {"courses_dept":"nurs","courses_id":"578","sumpass":56},{"courses_dept":"epse","courses_id":"421","sumpass":44},{"courses_dept":"eece","courses_id":"541","sumpass":24},{"courses_dept":"epse","courses_id":"519","sumpass":22},
+      {"courses_dept":"math","courses_id":"527","sumpass":18},{"courses_dept":"cnps","courses_id":"574","sumpass":16}]
+  }

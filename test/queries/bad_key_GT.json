@@ -1,0 +1,23 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": { "WHERE": {
+
+
+                "GT": {
+                    "coursesavg":94
+                }
+
+
+
+    },
+
+        "OPTIONS": {
+            "COLUMNS": ["courses1id","courses_avg"],  "ORDER":"courses_id"
+        }
+
+    },
+
+
+    "isQueryValid": false,
+    "result": "bad_key 3"
+}

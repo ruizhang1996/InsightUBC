@@ -1,0 +1,29 @@
+{
+    "title": "Test NOT",
+    "query": {
+        "WHERE": {
+            "NOT": {
+                "LT": {
+                    "courses_pass": 2655
+                }
+            }
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_dept",
+                "courses_pass",
+                "courses_id"
+            ],
+            "ORDER": "courses_pass"
+
+        }
+    },
+    "isQueryValid": true,
+            "result": [
+                { "courses_dept": "engl", "courses_pass": 2655 , "courses_id": "112" },
+                { "courses_dept": "engl", "courses_pass": 2698 , "courses_id": "112" },
+                { "courses_dept": "engl", "courses_pass": 2994 , "courses_id": "112" }
+            ]
+
+
+}

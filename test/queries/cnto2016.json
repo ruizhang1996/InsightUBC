@@ -1,0 +1,29 @@
+{
+    "title": "dept: cnto",
+    "query": { "WHERE": {
+              "AND":[
+                      {
+                          "EQ": {
+                              "courses_year":2016
+                          }
+                      },
+                      {
+                        "IS":{
+                                  "courses_dept": "cnto"
+                              }
+                      }
+                  ]
+
+
+        },
+
+        "OPTIONS": {
+            "COLUMNS": ["courses_id"],  "ORDER":"courses_id"
+            }
+
+            },
+
+
+    "isQueryValid": true,
+    "result":[]
+  }
