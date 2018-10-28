@@ -74,6 +74,7 @@ export class ParseZipRoom {
         }
     }
 
+    // This method can be used for getting roomNumber
     private getFullname(currTD: any) {
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
@@ -91,7 +92,8 @@ export class ParseZipRoom {
         }
     }
 
-    private getShortname(currTD: any) {
+    // This method can be used for getting shortname, address, furniture, type
+    private getChilnodeAttrValue(currTD: any) {
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
                 if (a["value"]) {
@@ -104,19 +106,7 @@ export class ParseZipRoom {
         }
     }
 
-    private getAddress(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a["value"]) {
-                    return a["value"].trim();
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
+    // This method can also be used to get href
     private getLink(currTD: any) {
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
@@ -134,8 +124,25 @@ export class ParseZipRoom {
         }
     }
 
+    private getSeats(currTD: any) {
+        if (currTD.childNodes) {
+            for (let a of currTD.childNodes) {
+                if (a["value"]) {
+                    return parseInt(a["value"].trim(), 10);
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
-        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && currNode.attrs &&
+        if (currNode === undefined || currNode === null) {
+            return;
+        }
+        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName && currNode.attrs &&
+            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
             (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
             let fullName: string = null;
             let shortName: string = null;
@@ -151,10 +158,10 @@ export class ParseZipRoom {
                         link = this.getLink(currTD);
                     }
                     if (this.getAttributeValue(currTD).match("building-code")) {
-                        shortName = this.getShortname(currTD);
+                        shortName = this.getChilnodeAttrValue(currTD);
                     }
                     if (this.getAttributeValue(currTD).match("building-address")) {
-                        address = this.getAddress(currTD);
+                        address = this.getChilnodeAttrValue(currTD);
                     }
                 }
             }
@@ -227,81 +234,12 @@ export class ParseZipRoom {
         });
     }
 
-    private getRoomNumber(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a.childNodes) {
-                    for (let b of a.childNodes) {
-                        if (b["value"]) {
-                            return b["value"].trim();
-                        }
-                    }
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    private getSeats(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a["value"]) {
-                    return parseInt(a["value"].trim(), 10);
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    private getFurniture(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a["value"]) {
-                    return a["value"].trim();
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    private getType(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a["value"]) {
-                    return a["value"].trim();
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
-    private getHref(currTD: any) {
-        if (currTD.childNodes) {
-            for (let a of currTD.childNodes) {
-                if (a["attrs"]) {
-                    for (let b of a["attrs"]) {
-                        if (b["value"]) {
-                            return b["value"].trim();
-                        }
-                    }
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
-
     private getAllRooms(currNode: any, roomCollector: Array<Promise<Room>>, building: Building): void {
-        if (currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && currNode.attrs &&
+        if (currNode === undefined || currNode === null) {
+            return;
+        }
+        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName && currNode.attrs &&
+            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
             (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
             let fullName: string = null;
             let shortName: string = null;
@@ -318,7 +256,7 @@ export class ParseZipRoom {
             for (let currTD of currNode.childNodes) {
                 if (currTD.nodeName === "td" && currTD.attrs && currTD.attrs[0].name === "class") {
                     if (this.getAttributeValue(currTD).match("room-number")) {
-                        roomNumber = this.getRoomNumber(currTD);
+                        roomNumber = this.getFullname(currTD);
                         fullName = building.getFullname();
                         shortName = building.getShortname();
                         address = building.getAddress();
@@ -328,13 +266,13 @@ export class ParseZipRoom {
                         seats = this.getSeats(currTD);
                     }
                     if (this.getAttributeValue(currTD).match("room-furniture")) {
-                        furniture = this.getFurniture(currTD);
+                        furniture = this.getChilnodeAttrValue(currTD);
                     }
                     if (this.getAttributeValue(currTD).match("room-type")) {
-                        type = this.getType(currTD);
+                        type = this.getChilnodeAttrValue(currTD);
                     }
                     if (this.getAttributeValue(currTD).match("field-nothing")) {
-                        href = this.getHref(currTD);
+                        href = this.getLink(currTD);
                     }
                 }
             }
@@ -361,15 +299,12 @@ export class ParseZipRoom {
                     fulfill(new Room(fullname, shortname, roomNumber, name, address, null, null, seats,
                         type, furniture, href));
                 }
-            }).catch(function (e: any) {
-                fulfill(new Room(fullname, shortname, roomNumber, name, address, null, null, seats,
-                    type, furniture, href));
             });
         });
     }
 
     private getGeoResponse(address: string): Promise<any> {
-        return new Promise<any>(function (fulfill, reject) {
+        return new Promise<any>(function (fulfill) {
             let url = "http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address);
             http.get(url, function (response: any) {
                 if (response.code !== 404) {
@@ -381,7 +316,7 @@ export class ParseZipRoom {
                         fulfill(result);
                     });
                 } else {
-                    reject(new InsightError("error code 404 in getGeoResponse:"));
+                    fulfill(null);
                 }
             }).on("error", function (e: any) {
                 fulfill(null);
