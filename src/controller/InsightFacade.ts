@@ -381,7 +381,7 @@ export default class InsightFacade implements IInsightFacade {
                 const transformation: InsightTransformation = query.TRANSFORMATIONS;
                 const order = options.ORDER;
                 let id: string;
-                if (transformation){
+                if (transformation) {
                     if (Object.keys(transformation).length !== 2) {
                         throw new Error("invalid transofrmation");
                     }
