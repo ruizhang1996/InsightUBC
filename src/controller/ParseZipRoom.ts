@@ -26,13 +26,13 @@ export class ParseZipRoom {
                         t.parseIndexHTM(indexData).then(function (buildings: Building[]) {
                             fulfill(buildings);
                         }).catch(function (e) {
-                            reject(new InsightError("parse IndexHTM fail"));
+                            reject(new InsightError("parse IndexHTM fail: " + e.message));
                         });
                     }).catch(function (e) {
-                        reject(new InsightError("async fail"));
+                        reject(new InsightError("async fail: " + e.message));
                     });
                 }).catch(function (e: any) {
-                    reject(new InsightError("loadAsync fail"));
+                    reject(new InsightError("loadAsync fail: " + e.message));
             });
         });
     }
@@ -53,10 +53,10 @@ export class ParseZipRoom {
                 if (buildingHasRoom) {
                     fulfill(buildings);
                 } else {
-                    reject(new InsightError("not a single valid building"));
+                    reject(new InsightError("not a single valid building, that is, no building has rooms" ));
                 }
             }).catch(function (e) {
-                reject(new InsightError("completeBuildingWithRoom fail"));
+                reject(new InsightError("completeBuildingWithRoom fail"  + e.message));
             });
         });
     }
@@ -181,11 +181,11 @@ export class ParseZipRoom {
                     }
                     Promise.all(arrayOfPromises).then(function (buildings: Building[]) {
                         fulfill(buildings);
-                    }).catch(function () {
-                        reject(new InsightError("at least one promise failed"));
+                    }).catch(function (e) {
+                        reject(new InsightError("Promise all fail in completeBuildingWithRooms: "  + e.message));
                     });
-                }).catch(function () {
-                reject(new InsightError("loadAsync fail"));
+                }).catch(function (e: any) {
+                reject(new InsightError("loadAsync fail in completeBuildingWithRooms: "  + e.message));
             });
         });
     }
@@ -198,11 +198,11 @@ export class ParseZipRoom {
                     t.parseRooms(roomData, building).then(function (rooms: Room[]) {
                         building.setRooms(rooms);
                         fulfill(building);
-                    }).catch(function () {
-                        reject(new InsightError("room fail"));
+                    }).catch(function (e) {
+                        reject(new InsightError("parseRooms fail, caught in createBuilding Promise: "  + e.message));
                     });
-                }).catch(function () {
-                reject(new InsightError("async fail"));
+                }).catch(function (e) {
+                reject(new InsightError("async in createBuildingPromise fail: " + e.message));
             });
         });
     }
@@ -221,8 +221,8 @@ export class ParseZipRoom {
                     }
                 }
                 fulfill(result);
-            }).catch(function () {
-                reject(new InsightError("at least one promise failed"));
+            }).catch(function (e) {
+                reject(new InsightError("promise all failed in parseRooms: " + e.message));
             });
         });
     }
@@ -372,7 +372,7 @@ export class ParseZipRoom {
         return new Promise<any>(function (fulfill, reject) {
             let url = "http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address);
             http.get(url, function (response: any) {
-                if (!response.error) {
+                if (response.code !== 404) {
                     let result: any = null;
                     response.on("data", function (data: any) {
                         result = JSON.parse(data);
@@ -381,10 +381,10 @@ export class ParseZipRoom {
                         fulfill(result);
                     });
                 } else {
-                    reject(new InsightError("error code 404"));
+                    reject(new InsightError("error code 404 in getGeoResponse:"));
                 }
             }).on("error", function (e: any) {
-                reject(new InsightError("some error occurred when call get"));
+                fulfill(null);
             });
         });
     }

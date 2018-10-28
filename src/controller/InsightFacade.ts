@@ -52,11 +52,11 @@ export default class InsightFacade implements IInsightFacade {
                 t.parser.parseZip(content).then(function (courses: Course[]) {
                     t.storeData(id, courses).then(function (result: string[]) {
                         fulfill(result);
-                    }).catch(function () {
-                        reject(new InsightError());
+                    }).catch(function (e) {
+                        reject(new InsightError("store course data error:" + e.message));
                     });
-                }).catch(function () {
-                    reject(new InsightError());
+                }).catch(function (e: any) {
+                    reject(new InsightError("parseZip error caught in addDataset" + e.message));
                 });
             });
         } else {
@@ -65,11 +65,11 @@ export default class InsightFacade implements IInsightFacade {
                 t.parser.parseZipRoom(content).then(function (buildings: Building[]) {
                     t.storeData(id, buildings).then(function (result: string[]) {
                         fulfill(result);
-                    }).catch(function () {
-                        reject(new InsightError());
+                    }).catch(function (e) {
+                        reject(new InsightError("store room data error:" + e.message));
                     });
-                }).catch(function () {
-                    reject(new InsightError());
+                }).catch(function (e: any) {
+                    reject(new InsightError("parseZipRoom error caught in addDataset: " + e.message));
                 });
             });
         }
@@ -87,7 +87,7 @@ export default class InsightFacade implements IInsightFacade {
                     Log.warn("fulfill");
                     fulfill(t.idArray);
                 } else {
-                    reject(new InsightError());
+                    reject(new InsightError("fs.write has failed"));
                 }
             });
         });
