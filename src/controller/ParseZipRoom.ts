@@ -137,13 +137,38 @@ export class ParseZipRoom {
         }
     }
 
+    private hasValidValue(currTR: any): boolean {
+        if (currTR.attrs) {
+            for (let c of currTR.attrs) {
+                if (c["value"]) {
+                    return c["value"].match("odd") || c["value"].match("even");
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    private hasValidAttrValue(currTD: any): boolean {
+        if (currTD.attrs) {
+            for (let c of currTD.attrs) {
+                if (c.name) {
+                    return c.name === "class";
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
         if (currNode === undefined || currNode === null) {
             return;
         }
-        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName && currNode.attrs &&
-            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
-            (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
+        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName &&
+            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && this.hasValidValue(currNode)) {
             let fullName: string = null;
             let shortName: string = null;
             let address: string = null;
@@ -152,7 +177,7 @@ export class ParseZipRoom {
                 return;
             }
             for (let currTD of currNode.childNodes) {
-                if (currTD.nodeName === "td" && currTD.attrs && currTD.attrs[0].name === "class") {
+                if (currTD.nodeName === "td" && this.hasValidAttrValue(currTD)) {
                     if (this.getAttributeValue(currTD).match("title")) {
                         fullName = this.getFullname(currTD);
                         link = this.getLink(currTD);
@@ -238,9 +263,8 @@ export class ParseZipRoom {
         if (currNode === undefined || currNode === null) {
             return;
         }
-        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName && currNode.attrs &&
-            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" &&
-            (currNode.attrs[0]["value"].match("odd") || currNode.attrs[0]["value"].match("even"))) {
+        if (currNode.nodeName && currNode.parentNode && currNode.parentNode.nodeName &&
+            currNode.nodeName === "tr" && currNode.parentNode.nodeName === "tbody" && this.hasValidValue(currNode)) {
             let fullName: string = null;
             let shortName: string = null;
             let roomNumber: string = null;
@@ -254,7 +278,7 @@ export class ParseZipRoom {
                 return;
             }
             for (let currTD of currNode.childNodes) {
-                if (currTD.nodeName === "td" && currTD.attrs && currTD.attrs[0].name === "class") {
+                if (currTD.nodeName === "td" && this.hasValidAttrValue(currTD)) {
                     if (this.getAttributeValue(currTD).match("room-number")) {
                         roomNumber = this.getFullname(currTD);
                         fullName = building.getFullname();
