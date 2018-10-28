@@ -380,10 +380,18 @@ export default class InsightFacade implements IInsightFacade {
                 }
                 const transformation: InsightTransformation = query.TRANSFORMATIONS;
                 const order = options.ORDER;
-                if (!columns[0].includes("_")) {
-                    throw new Error("no _ in column");
+                let id: string;
+                if (transformation){
+                    if (Object.keys(transformation).length !== 2) {
+                        throw new Error("invalid transofrmation");
+                    }
+                    id = transformation.GROUP[0].split("_")[0];
+                } else {
+                    if (!columns[0].includes("_")) {
+                        throw new Error("no _ in column");
+                    }
+                    id = columns[0].split("_")[0];
                 }
-                const id: string = columns[0].split("_")[0];
                 let courseDataset;
                 let sections;
                 if (this.storage.get(id)) {
@@ -397,9 +405,6 @@ export default class InsightFacade implements IInsightFacade {
                 }
                 let groups: any[] = [];
                 if (transformation) {
-                    if (Object.keys(transformation).length !== 2) {
-                        throw new Error("invalid transofrmation");
-                    }
                     groups = this.transform(sections, id, transformation);
                 }
                 let result: any[] = [];

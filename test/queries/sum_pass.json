@@ -1,0 +1,31 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": {
+    "WHERE": {
+        "GT": { "courses_avg": 98 }
+    },
+    "OPTIONS": {
+        "COLUMNS": ["courses_id", "sum"],
+        "ORDER": {
+          "dir": "DOWN",
+          "keys": [
+            "sum"
+          ]
+        }
+    },
+    "TRANSFORMATIONS": {
+        "GROUP": ["courses_id"],
+        "APPLY": [
+            {
+                "sum": {
+                    "SUM": "courses_pass"
+                }
+        }]
+    }
+},
+
+
+    "isQueryValid": true,
+    "result":[{"courses_id":"300","sum":164},{"courses_id":"449","sum":107},{"courses_id":"509","sum":56},{"courses_id":"578","sum":56},{"courses_id":"421","sum":44},
+      {"courses_id":"541","sum":24},{"courses_id":"519","sum":22},{"courses_id":"527","sum":18},{"courses_id":"574","sum":16}]
+  }

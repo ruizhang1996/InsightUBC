@@ -1,0 +1,30 @@
+{
+    "title": "SELECT dept, avg WHERE avg > 97",
+    "query": {
+    "WHERE": {
+        "GT": { "courses_avg": 98 }
+    },
+    "OPTIONS": {
+        "COLUMNS": [ "sumYear"],
+        "ORDER": {
+          "dir": "DOWN",
+          "keys": [
+            "sumYear"
+          ]
+        }
+    },
+    "TRANSFORMATIONS": {
+        "GROUP": ["courses_id"],
+        "APPLY": [
+            {
+                "sumYear": {
+                    "SUM": "courses_year"
+                }
+        }]
+    }
+},
+
+
+    "isQueryValid": true,
+    "result":[{"sumYear":9838},{"sumYear":7826},{"sumYear":7823},{"sumYear":5918},{"sumYear":3915},{"sumYear":3911},{"sumYear":3909},{"sumYear":3909},{"sumYear":2012}]
+  }

@@ -29,11 +29,11 @@
               "rooms_shortname"
             ],
             "APPLY": [
-              
+
             ]
           }
 
     },
-    "isQueryValid": false,
-     "result":"empty rules"
+    "isQueryValid": true,
+    "result":[{"rooms_shortname":"HEBB"},{"rooms_shortname":"LSC"},{"rooms_shortname":"OSBO"}]
 }
