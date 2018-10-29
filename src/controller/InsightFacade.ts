@@ -184,54 +184,51 @@ export default class InsightFacade implements IInsightFacade {
             return false;
         } else if (filter.GT) {
             const key = Object.keys(filter.GT)[0];
-            const val = filter.GT[key];
+            const val = Object.values(filter.GT)[0];
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
             if (fid !== datasetID) {
-                throw new Error("Query is trying to query two datasets a the same time");
+                throw new Error("query two datasets ");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("GT should be a number");
-            } else {
-                return actualValue > val ;
             }
+            return actualValue > val ;
         } else if (filter.LT) {
             const key = Object.keys(filter.LT)[0];
-            const val = filter.LT[key];
+            const val = Object.values(filter.LT)[0];
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
             if (fid !== datasetID) {
-                throw new Error("Query is trying to query two datasets a the same time");
+                throw new Error(" query two datasets ");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("LT should be a number");
-            } else {
-                return actualValue < val ;
             }
+            return actualValue < val ;
         } else if (filter.EQ) {
             const key = Object.keys(filter.EQ)[0];
-            const val = filter.EQ[key];
+            const val = Object.values(filter.EQ)[0];
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue = data[col];
             if (fid !== datasetID) {
-                throw new Error("Query is trying to query two datasets a the same time");
+                throw new Error(" query two datasets ");
             }
             if (!isNumber(val) || !isNumber(actualValue)) {
                 throw new Error("EQ should be a number");
-            } else {
-                return actualValue === val ;
             }
+            return actualValue === val ;
         } else if (filter.IS) {
             const key = Object.keys(filter.IS)[0];
-            const val: string = filter.IS[key];
+            const val: string = Object.values(filter.IS)[0];
             const col = key.split("_")[1];
             const fid = key.split("_")[0];
             const actualValue: string = data[col];
             if (fid !== datasetID) {
-                throw new Error("Query is trying to query two datasets a the same time");
+                throw new Error("query two datasets ");
             }
             if (!isString(val) || !isString(actualValue)) {
                 throw new Error("IS should be a string");
@@ -256,9 +253,6 @@ export default class InsightFacade implements IInsightFacade {
     }
     private transform(dataset: any[], id: string, transformation: InsightTransformation): any [] {
         const transformedDataset = [];
-        if (Object.keys(transformation.GROUP).length < 1) {
-            throw new Error("at least one key in Group");
-        }
         let dataDict: {[key: string]: any} = {};
         for (const data of dataset) {
             let a: string = "";
@@ -385,6 +379,9 @@ export default class InsightFacade implements IInsightFacade {
                     if (Object.keys(transformation).length !== 2) {
                         throw new Error("invalid transofrmation");
                     }
+                    if (Object.keys(transformation.GROUP).length < 1) {
+                        throw new Error("at least one key in Group");
+                    }
                     id = transformation.GROUP[0].split("_")[0];
                 } else {
                     if (!columns[0].includes("_")) {
@@ -411,15 +408,15 @@ export default class InsightFacade implements IInsightFacade {
                     }
                     for (const group of groups) {
                         const newGroup: {[key: string]: any } = {};
-                        for (const ID_KEY of columns) {
-                            if (this.showsUpinTransform(ID_KEY, transformation) ) {
+                        for (const KEY of columns) {
+                            if (this.showsUpinTransform(KEY, transformation) ) {
                                 let key;
-                                if (! ID_KEY.includes("_")) {
-                                    key = ID_KEY;
+                                if (! KEY.includes("_")) {
+                                    key = KEY;
                                 } else {
-                                    key = ID_KEY.split("_")[1];
+                                    key = KEY.split("_")[1];
                                 }
-                                newGroup[ID_KEY] = group[key];
+                                newGroup[KEY] = group[key];
                             } else {
                                 throw new Error("colomn is not in group or applykey");
                             }
@@ -473,36 +470,23 @@ export default class InsightFacade implements IInsightFacade {
                         if (dir === undefined) {
                             throw new Error("missing dir");
                         }
-                        function sortHelper1(a: any, b: any , keys: string[], index: number): number {
-                            if (a[keys[index]] < b[keys[index]]) {
-                                return -1;
+                        function sortHelper(a: any, b: any , keys: string[]): number {
+                            for (const key of keys) {
+                                if (a[key] < b[key]) {
+                                    return -1;
+                                }
+                                if (a[key] > b[key]) {
+                                    return 1;
+                                }
                             }
-                            if (a[keys[index]] > b[keys[index]]) {
-                                return 1;
-                            }
-                            if (index >= applykeys.length - 1 ) {
-                                return 0;
-                            }
-                            return sortHelper1(a, b, keys, index + 1);
-                        }
-                        function sortHelper2(a: any, b: any , keys: string[], index: number): number {
-                            if (a[keys[index]] < b[keys[index]]) {
-                                return 1;
-                            }
-                            if (a[keys[index]] > b[keys[index]]) {
-                                return -1;
-                            }
-                            if (index >= applykeys.length - 1 ) {
-                                return 0;
-                            }
-                            return sortHelper2(a, b, keys, index + 1);
+                            return 0;
                         }
                         result.sort((a, b) => {
                             if (dir === "UP") {
-                                return sortHelper1(a, b, applykeys, 0);
+                                return sortHelper(a, b, applykeys);
                             }
                             if (dir === "DOWN") {
-                                return sortHelper2(a, b, applykeys, 0);
+                                return sortHelper(b, a, applykeys);
                             }
                             throw  new Error("invalid dir");
                         });
