@@ -316,7 +316,7 @@ export class ParseZipRoom {
         let t = this;
         return new Promise<Room>(function (fulfill) {
             t.getGeoResponse(address).then(function (latlon: any) {
-                if (latlon !== null && !latlon.error) {
+                if (latlon !== null) {
                     fulfill(new Room(fullname, shortname, roomNumber, name, address, latlon.lat, latlon.lon, seats,
                         type, furniture, href));
                 } else {
@@ -331,7 +331,7 @@ export class ParseZipRoom {
         return new Promise<any>(function (fulfill) {
             let url = "http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address);
             http.get(url, function (response: any) {
-                if (response.code !== 404) {
+                if (!response.error) {
                     let result: any = null;
                     response.on("data", function (data: any) {
                         result = JSON.parse(data);
