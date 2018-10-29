@@ -61,53 +61,50 @@ export class ParseZipRoom {
         });
     }
 
-    private getAttributeValue(currTD: any) {
+    private getAttributeValue(currTD: any): string {
+        let result: string = null;
         if (currTD.attrs) {
             for (let a of currTD.attrs) {
                 if (a["value"]) {
-                    return a["value"];
+                    result = a["value"];
                 }
             }
-            return null;
-        } else {
-            return null;
         }
+        return result;
     }
 
     // This method can be used for getting roomNumber
-    private getFullname(currTD: any) {
+    private getFullname(currTD: any): string {
+        let result: string = null;
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
                 if (a.childNodes) {
                     for (let b of a.childNodes) {
                         if (b["value"]) {
-                            return b["value"].trim();
+                            result =  b["value"].trim();
                         }
                     }
                 }
             }
-            return null;
-        } else {
-            return null;
         }
+        return result;
     }
 
     // This method can be used for getting shortname, address, furniture, type
-    private getChilnodeAttrValue(currTD: any) {
+    private getChilnodeAttrValue(currTD: any): string {
+        let result: string = null;
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
                 if (a["value"]) {
-                    return a["value"].trim();
+                    result = a["value"].trim();
                 }
             }
-            return null;
-        } else {
-            return null;
         }
+        return result;
     }
 
     // This method can also be used to get href
-    private getLink(currTD: any) {
+    private getLink(currTD: any): string {
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
                 if (a["attrs"]) {
@@ -124,43 +121,40 @@ export class ParseZipRoom {
         }
     }
 
-    private getSeats(currTD: any) {
+    private getSeats(currTD: any): number {
+        let result: number = null;
         if (currTD.childNodes) {
             for (let a of currTD.childNodes) {
                 if (a["value"]) {
-                    return parseInt(a["value"].trim(), 10);
+                    result = parseInt(a["value"].trim(), 10);
                 }
             }
-            return null;
-        } else {
-            return null;
         }
+        return result;
     }
 
     private hasValidValue(currTR: any): boolean {
+        let result: boolean = false;
         if (currTR.attrs) {
             for (let c of currTR.attrs) {
                 if (c["value"]) {
-                    return c["value"].match("odd") || c["value"].match("even");
+                    result = c["value"].match("odd") || c["value"].match("even");
                 }
             }
-            return false;
-        } else {
-            return false;
         }
+        return result;
     }
 
     private hasValidAttrValue(currTD: any): boolean {
+        let result: boolean = false;
         if (currTD.attrs) {
             for (let c of currTD.attrs) {
                 if (c.name) {
-                    return c.name === "class";
+                    result = (c.name === "class");
                 }
             }
-            return false;
-        } else {
-            return false;
         }
+        return result;
     }
 
     private getAllBuildings(currNode: any, buildingCollector: Building[]): void {
