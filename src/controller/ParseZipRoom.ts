@@ -329,20 +329,24 @@ export class ParseZipRoom {
 
     private getGeoResponse(address: string): Promise<any> {
         return new Promise<any>(function (fulfill) {
-            let url = "http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address);
-            http.get(url, function (response: any) {
-                if (!response.error) {
-                    let result: any = null;
-                    response.on("data", function (data: any) {
-                        result = JSON.parse(data);
+            http.get("http://cs310.ugrad.cs.ubc.ca:11316/api/v1/project_n3v0b_z9y0b/" + encodeURI(address),
+                function (res: any) {
+                if (!res.error) {
+                    let rawData = "";
+                    res.on("data", function (data: any) {
+                        try {
+                            rawData = JSON.parse(data);
+                        } catch (e) {
+                            rawData = null;
+                        }
                     });
-                    response.on("end", function () {
-                        fulfill(result);
+                    res.on("end", function () {
+                        fulfill(rawData);
                     });
                 } else {
                     fulfill(null);
                 }
-            }).on("error", function (e: any) {
+            }).on("error", function (e) {
                 fulfill(null);
             });
         });
