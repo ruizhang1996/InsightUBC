@@ -1,0 +1,32 @@
+{
+    "title": "empty filter room",
+    "query":
+    {
+  "WHERE": {},
+  "OPTIONS": {
+    "COLUMNS": [
+      "avgSeats"
+    ],
+    "ORDER": {
+      "dir": "UP",
+      "keys": [
+        "avgSeats"
+      ]
+    }
+  },
+  "TRANSFORMATIONS": {
+    "GROUP": [
+      "courses_instructor"
+    ],
+    "APPLY": [
+      {
+        "avgSeats": {
+          "AVG": "courses_avg"
+        }
+      }
+    ]
+  }
+},
+    "isQueryValid": false,
+     "result":"too many after transform"
+}
