@@ -1,0 +1,31 @@
+{
+    "title": "empty filter room",
+    "query":
+    {
+          "WHERE": {
+                  "AND": [{
+                "IS": {
+                    "rooms_furniture": "*Tables*"
+                }
+            }, {
+                "GT": {
+                    "rooms_seats": 300
+                }
+            }]
+          },
+          "OPTIONS": {
+            "COLUMNS": [
+              "rooms_shortname",
+              "room1_seats"
+            ],
+            "ORDER": {
+              "dir": "DOWN",
+              "keys": [
+                "rooms_shortname"
+              ]
+            }
+          }
+    },
+    "isQueryValid": false,
+     "result":"invalid column"
+}

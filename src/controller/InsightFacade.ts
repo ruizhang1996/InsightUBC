@@ -251,8 +251,7 @@ export default class InsightFacade implements IInsightFacade {
             throw new Error("Invalid filter name.");
         }
     }
-    private transform(dataset: any[], id: string, transformation: InsightTransformation): any [] {
-        const transformedDataset = [];
+    private grouby(dataset: any[], id: string, transformation: InsightTransformation): {[key: string]: any} {
         let dataDict: {[key: string]: any} = {};
         for (const data of dataset) {
             let a: string = "";
@@ -276,6 +275,11 @@ export default class InsightFacade implements IInsightFacade {
                 dataDict[a].push(data);
             }
         }
+        return dataDict;
+    }
+    private transform(dataset: any[], id: string, transformation: InsightTransformation): any [] {
+        const transformedDataset = [];
+        const dataDict: {[key: string]: any} = this.grouby(dataset, id, transformation);
         const rules = transformation.APPLY;
         for (let k in dataDict) {
             const sections = dataDict [k];
@@ -432,6 +436,9 @@ export default class InsightFacade implements IInsightFacade {
                         for (const ID_KEY of columns) {
                             if (! ID_KEY.includes("_")) {
                                 throw new Error("no _ in key");
+                            }
+                            if (ID_KEY.split("_")[0] !== id) {
+                                throw new Error("query different dataset when column[1]");
                             }
                             const key = ID_KEY.split("_")[1];
                             if ( sec[key] === undefined) {
