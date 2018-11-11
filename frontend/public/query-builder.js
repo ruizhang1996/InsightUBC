@@ -11,7 +11,10 @@ CampusExplorer.buildQuery = function() {
     let query = {};
     query["WHERE"] = buildWhere(panel,id);
     query["OPTIONS"] = buildOption(panel,id);
-    query["TRANSFORMATION"] = buildTransformation(panel,id);
+    const trans = buildTransformation(panel,id);
+    if (Object.keys(trans).length > 0 ){
+        query["TRANSFORMATION"] = trans;
+    }
     return query;
 };
 
@@ -121,8 +124,12 @@ function buildTransformation(panel,id) {
         applyrule[term][operator] = ID_KEY;
         applyRules.push(applyrule);
     }
-    transformation["GROUP"] = groups;
-    transformation["APPLY"] = applyRules;
+    if (! groups.isEmpty()){
+        transformation["GROUP"] = groups;
+    }
+    if (! applyRules.isEmpty()){
+        transformation["APPLY"] = applyRules;
+    }
     return transformation;
 }
 
