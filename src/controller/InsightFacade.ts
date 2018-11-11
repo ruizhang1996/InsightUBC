@@ -84,7 +84,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (!err) {
                     t.storage.set(id, data);
                     t.idArray.push(id);
-                    Log.warn("fulfill");
+                    Log.info("fulfill");
                     fulfill(t.idArray);
                 } else {
                     reject(new InsightError("fs.write has failed"));
@@ -94,7 +94,7 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     public removeDataset(id: string): Promise<string> {
-        if (id === null || id === undefined) {
+        if (id === null || id === undefined || id === "") {
             return Promise.reject(new InsightError("invalid id for removal"));
         }
         let t = this;

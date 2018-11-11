@@ -222,7 +222,7 @@ describe("InsightFacade Add/Remove Dataset", function () {
         } catch (err) {
             response = err;
         } finally {
-            expect(response).to.be.instanceOf(NotFoundError);
+            expect(response).to.be.instanceOf(InsightError);
         }
     });
 

@@ -8,6 +8,5 @@
 CampusExplorer.buildQuery = function() {
     let query = {};
     // TODO: implement!
-    console.log("CampusExplorer.buildQuery not implemented yet.");
     return query;
 };

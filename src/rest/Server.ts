@@ -5,6 +5,8 @@
 import fs = require("fs");
 import restify = require("restify");
 import Log from "../Util";
+import InsightFacade from "../controller/InsightFacade";
+import {InsightError} from "../controller/IInsightFacade";
 
 /**
  * This configures the REST endpoints for the server.
@@ -13,10 +15,12 @@ export default class Server {
 
     private port: number;
     private rest: restify.Server;
+    private static facade: InsightFacade;
 
     constructor(port: number) {
         Log.info("Server::<init>( " + port + " )");
         this.port = port;
+        Server.facade = new InsightFacade();
     }
 
     /**
@@ -64,6 +68,10 @@ export default class Server {
                 that.rest.get("/echo/:msg", Server.echo);
 
                 // NOTE: your endpoints should go here
+                that.rest.put("/dataset/:id/:kind", Server.addDataset);
+                that.rest.del("/dataset/:id", Server.removeDataset);
+                that.rest.post("/query", Server.performQuery);
+                that.rest.get("/datasets", Server.listDataset);
 
                 // This must be the last endpoint!
                 that.rest.get("/.*", Server.getStatic);
@@ -100,6 +108,56 @@ export default class Server {
             Log.error("Server::echo(..) - responding 400");
             res.json(400, {error: err});
         }
+        return next();
+    }
+
+    private static addDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
+        // Log.trace("Server::addDataset(..) - params: " + JSON.stringify(req.params));
+        let content = new Buffer(req.params.body).toString("base64");
+        Server.facade.addDataset(req.params.id, content, req.params.kind).then(function (response: any) {
+            Log.trace("addDataset successful");
+            res.json(200, {result: response});
+        }).catch(function (e) {
+            Log.trace("addDataset unsuccessful");
+            res.json(400, {error: e});
+        });
+        return next();
+    }
+
+    private static removeDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
+        Log.trace("Server::removeDataset(..) - params: " + JSON.stringify(req.params));
+        Server.facade.removeDataset(req.params.id).then(function (response: any) {
+            res.json(200, {result: response});
+        }).catch(function (e) {
+            if (e instanceof InsightError) {
+                res.json(400, {error: e});
+                Log.trace("removeDataset successful");
+            } else {
+                res.json(404, {error: e});
+                Log.trace("removeDataset unsuccessful");
+            }
+        });
+        return next();
+    }
+
+    private static performQuery(req: restify.Request, res: restify.Response, next: restify.Next) {
+        Log.trace("Server::performQuery(..) - params: " + JSON.stringify(req.params));
+        Server.facade.performQuery(req.body).then(function (response: any) {
+            res.json(200, {result: response});
+            Log.trace("performQuery successful");
+        }).catch(function (e) {
+            res.json(404, {error: e});
+            Log.trace("performQuery unsuccessful");
+        });
+        return next();
+    }
+
+    private static listDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
+        Log.trace("Server::listDataset(..) - params: " + JSON.stringify(req.params));
+        Server.facade.listDatasets().then(function (response: any) {
+            res.json(200, {result: response});
+            Log.trace("listDataset successful");
+        });
         return next();
     }
 
