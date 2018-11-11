@@ -18,7 +18,6 @@ describe("Facade D3", function () {
     before(function () {
         facade = new InsightFacade();
         server = new Server(4321);
-        // TODO: start server here once and handle errors properly
         server.start().then(function (success: boolean) {
             // done
         }).catch(function (e) {
@@ -27,7 +26,6 @@ describe("Facade D3", function () {
     });
 
     after(function () {
-        // TODO: stop server here once!
         server.stop().then(function (sucess: boolean) {
             // done
         });
@@ -43,7 +41,6 @@ describe("Facade D3", function () {
         Log.test(`AfterTest: ${this.currentTest.title}`);
     });
 
-    // TODO: read your courses and rooms datasets here once!
     let courses = fs.readFileSync("./test/data/courses.zip");
     let rooms = fs.readFileSync("./test/data/rooms.zip");
     // Hint on how to test PUT requests

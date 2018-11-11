@@ -112,7 +112,6 @@ export default class Server {
     }
 
     private static addDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
-        // Log.trace("Server::addDataset(..) - params: " + JSON.stringify(req.params));
         let content = new Buffer(req.params.body).toString("base64");
         Server.facade.addDataset(req.params.id, content, req.params.kind).then(function (response: any) {
             Log.trace("addDataset successful");
@@ -125,7 +124,6 @@ export default class Server {
     }
 
     private static removeDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
-        Log.trace("Server::removeDataset(..) - params: " + JSON.stringify(req.params));
         Server.facade.removeDataset(req.params.id).then(function (response: any) {
             res.json(200, {result: response});
         }).catch(function (e) {
@@ -141,7 +139,6 @@ export default class Server {
     }
 
     private static performQuery(req: restify.Request, res: restify.Response, next: restify.Next) {
-        Log.trace("Server::performQuery(..) - params: " + JSON.stringify(req.params));
         Server.facade.performQuery(req.body).then(function (response: any) {
             res.json(200, {result: response});
             Log.trace("performQuery successful");
@@ -153,7 +150,6 @@ export default class Server {
     }
 
     private static listDataset(req: restify.Request, res: restify.Response, next: restify.Next) {
-        Log.trace("Server::listDataset(..) - params: " + JSON.stringify(req.params));
         Server.facade.listDatasets().then(function (response: any) {
             res.json(200, {result: response});
             Log.trace("listDataset successful");

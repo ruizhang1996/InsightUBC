@@ -6,7 +6,6 @@
  */
 CampusExplorer.sendQuery = function(query) {
     return new Promise(function(fulfill, reject) {
-        // TODO: implement!
         var request = new XMLHttpRequest();
         request.open("GET", "http://http://127.0.0.1:8080/" + query, true);
         request.onload = function() {
@@ -17,11 +16,9 @@ CampusExplorer.sendQuery = function(query) {
                 fulfill(result);
             }
         };
-
         request.onerror = function() {
             reject('The request failed')
         };
-
         request.send();
     });
 };
