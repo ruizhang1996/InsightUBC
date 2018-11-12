@@ -9,8 +9,9 @@ CampusExplorer.sendQuery = function(query) {
         var request = new XMLHttpRequest();
         request.open("POST", "/query", true);
         request.onload = function() {
-            if (this.status === 400) {
-                reject(result.error);
+            var result = JSON.parse(request.responseText);
+            if (request.status === 400) {
+                reject(result);
             } else {
                 fulfill(result);
             }
