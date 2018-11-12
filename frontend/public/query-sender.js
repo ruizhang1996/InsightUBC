@@ -7,10 +7,9 @@
 CampusExplorer.sendQuery = function(query) {
     return new Promise(function(fulfill, reject) {
         var request = new XMLHttpRequest();
-        request.open("GET", "http://http://127.0.0.1:8080/" + query, true);
+        request.open("POST", "/query", true);
         request.onload = function() {
-            var result = JSON.parse(request.responseText);
-            if ('error' in result) {
+            if (this.status === 400) {
                 reject(result.error);
             } else {
                 fulfill(result);
@@ -19,6 +18,6 @@ CampusExplorer.sendQuery = function(query) {
         request.onerror = function() {
             reject('The request failed')
         };
-        request.send();
+        request.send(JSON.stringify(query));
     });
 };
