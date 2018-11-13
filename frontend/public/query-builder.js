@@ -86,7 +86,9 @@ function buildWhere(panel,id) {
         if (type !== "NOT"){
             where[type] = filters;
         } else {
-            where["NOT"]["OR"] = filters;
+            let entry = {};
+            entry["OR"] = filters;
+            where["NOT"] = entry;
         }
     }
     return where;
@@ -127,12 +129,11 @@ function buildTransformation(panel,id) {
         applyrule[term] = entry;
         applyRules.push(applyrule);
     }
-    if ( groups.length !== 0){
+    if ( groups.length !== 0 || applyRules.length !== 0 ){
         transformation["GROUP"] = groups;
-    }
-    if ( applyRules.length !== 0){
         transformation["APPLY"] = applyRules;
     }
+
     return transformation;
 }
 
@@ -164,7 +165,7 @@ function buildOption(panel,id) {
         }
     }
     if (orders.length === 0 && panel.getElementsByClassName("control descending")[0].
-        getElementsByTagName("input")[0].checked === null){
+        getElementsByTagName("input")[0].checked === undefined){
         return options;
     }
     let orderObj = {};
