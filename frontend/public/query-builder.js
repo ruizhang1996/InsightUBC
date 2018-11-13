@@ -65,7 +65,9 @@ function buildWhere(panel,id) {
         }
         const ID_KEY = id+ "_" + field;
         let filter = {};
-        filter[operator][ID_KEY] = term;
+        let entry = {};
+        entry[ID_KEY] = term;
+        filter[operator]= entry;
         if (cond.getElementsByClassName("control not")[0].getElementsByTagName("input")[0].checked){
             filters.push({"NOT": filter});
         } else {
@@ -94,8 +96,7 @@ function buildWhere(panel,id) {
 function buildTransformation(panel,id) {
     let transformation = {};
     let groups = [];
-    const groupNames = panel.getElementsByClassName("form-group groups")[0].
-    getElementsByClassName("control group")[0].getElementsByTagName("input");
+    const groupNames = panel.getElementsByClassName("form-group groups")[0].getElementsByTagName("input");
     for (g of groupNames){
         if (g.checked){
             const ID_KEY = id + "_" + g.value;
@@ -121,13 +122,15 @@ function buildTransformation(panel,id) {
         }
         let applyrule = {};
         const ID_KEY = id + "_" + field;
-        applyrule[term][operator] = ID_KEY;
+        let entry = {};
+        entry[operator] = ID_KEY;
+        applyrule[term] = entry;
         applyRules.push(applyrule);
     }
-    if (! groups.isEmpty()){
+    if ( groups.length !== 0){
         transformation["GROUP"] = groups;
     }
-    if (! applyRules.isEmpty()){
+    if ( applyRules.length !== 0){
         transformation["APPLY"] = applyRules;
     }
     return transformation;
@@ -160,7 +163,7 @@ function buildOption(panel,id) {
             orders.push(ID_KEY);
         }
     }
-    if (orders.isEmpty() && panel.getElementsByClassName("control descending")[0].
+    if (orders.length === 0 && panel.getElementsByClassName("control descending")[0].
         getElementsByTagName("input")[0].checked === null){
         return options;
     }
