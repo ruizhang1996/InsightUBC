@@ -118,7 +118,7 @@ export default class Server {
             res.json(200, {result: response});
         }).catch(function (e) {
             Log.trace("addDataset unsuccessful");
-            res.json(400, {error: e});
+            res.json(400, {error: e.message});
         });
         return next();
     }
@@ -128,10 +128,10 @@ export default class Server {
             res.json(200, {result: response});
         }).catch(function (e) {
             if (e instanceof InsightError) {
-                res.json(400, {error: e});
+                res.json(400, {error: e.message});
                 Log.trace("removeDataset successful");
             } else {
-                res.json(404, {error: e});
+                res.json(404, {error: e.message});
                 Log.trace("removeDataset unsuccessful");
             }
         });
@@ -143,7 +143,7 @@ export default class Server {
             res.json(200, {result: response});
             Log.trace("performQuery successful");
         }).catch(function (e) {
-            res.json(404, {error: e});
+            res.json(400, {error: e.message});
             Log.trace("performQuery unsuccessful");
         });
         return next();

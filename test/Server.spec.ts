@@ -7,6 +7,7 @@ import chaiHttp = require("chai-http");
 import {expect} from "chai";
 import Log from "../src/Util";
 import * as fs from "fs";
+import Response = ChaiHttp.Response;
 
 describe("Facade D3", function () {
 
@@ -50,7 +51,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset/courses/courses")
                 .attach("body", courses, "courses.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect(res.status).to.be.equal(200);
@@ -72,7 +73,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset/rooms/rooms")
                 .attach("body", rooms, "rooms.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect(res.status).to.be.equal(200);
@@ -94,7 +95,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset/courses/courses")
                 .attach("body", courses, "courses.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect.fail();
@@ -116,7 +117,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset/courses2/courses")
                 .attach("body", courses, "courses.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect(res.status).to.be.equal(200);
@@ -138,7 +139,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset/courses/DNE")
                 .attach("body", courses, "courses.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect.fail();
@@ -160,7 +161,7 @@ describe("Facade D3", function () {
             return chai.request(URL)
                 .put("/dataset//courses")
                 .attach("body", courses, "courses.zip")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful put");
                     expect.fail();
@@ -181,7 +182,7 @@ describe("Facade D3", function () {
         try {
             return chai.request(URL)
                 .del("/dataset/courses")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful del");
                     expect(res.status).to.be.equal(200);
@@ -202,7 +203,7 @@ describe("Facade D3", function () {
         try {
             return chai.request(URL)
                 .del("/dataset/courses")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful del");
                     expect.fail();
@@ -223,7 +224,7 @@ describe("Facade D3", function () {
         try {
             return chai.request(URL)
                 .del("/dataset/")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful del");
                     expect.fail();
@@ -244,7 +245,7 @@ describe("Facade D3", function () {
         try {
             return chai.request(URL)
                 .get("/datasets")
-                .then(function (res: ChaiHttp.Response) {
+                .then(function (res: Response) {
                     // some logging here please!
                     Log.info("successful get");
                     expect(res.status).to.be.equal(200);
@@ -261,5 +262,143 @@ describe("Facade D3", function () {
         }
     });
 
-    // The other endpoints work similarly. You should be able to find all instructions at the chai-http documentation
+    it("PUT test for courses dataset pass 2", function () {
+        try {
+            return chai.request(URL)
+                .put("/dataset/courses/courses")
+                .attach("body", courses, "courses.zip")
+                .then(function (res: Response) {
+                    // some logging here please!
+                    Log.info("successful put");
+                    expect(res.status).to.be.equal(200);
+                })
+                .catch(function (err: any) {
+                    // some logging here please!
+                    Log.info(err);
+                    expect.fail();
+                });
+        } catch (err) {
+            // and some more logging here!
+            Log.info(err);
+            expect.fail();
+        }
+    });
+
+    it("POST test for query pass q2", function () {
+        let query = {
+            WHERE: {
+                OR: [
+                    {
+                        AND: [
+                            {
+                                GT: {
+                                    courses_avg: 90
+                                }
+                            },
+                            {
+                                IS: {
+                                    courses_dept: "adhe"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        EQ: {
+                            courses_avg: 95
+                        }
+                    }
+                ]
+            },
+            OPTIONS: {
+                COLUMNS: [
+                    "courses_dept",
+                    "courses_id",
+                    "courses_avg"
+                ],
+                ORDER: "courses_avg"
+            }
+        };
+
+        return chai.request(URL)
+            .post("/query").send(query)
+            .then(function (res: Response) {
+                Log.info("successful post");
+                expect(res.status).to.be.equal(200);
+            })
+            .catch(function (err: any) {
+                // and some more logging here!
+                Log.info(err);
+                expect.fail();
+            });
+    });
+
+    it("POST test for query fail q4", function () {
+        let query = {
+            WHERE: {
+                GT: {
+                    courses_avg: 97
+                }
+            },
+            OPTIONS: {
+                COLUMNS: [
+                    "courses_notakey",
+                    "courses_avg"
+                ],
+                ORDER: "courses_avg"
+            }
+        };
+        return chai.request(URL)
+            .post("/query").send(query)
+            .then(function (res: Response) {
+                Log.info("successful post");
+                expect.fail();
+            })
+            .catch(function (err: any) {
+                // and some more logging here!
+                Log.info(err);
+                expect(err.status).to.be.equal(400);
+            });
+    });
+
+    it("echo test to improve coverage", function () {
+        try {
+            return chai.request(URL)
+                .get("/echo/hello")
+                .then(function (res: Response) {
+                    // some logging here please!
+                    Log.info("successful echo");
+                    expect(res.status).to.be.equal(200);
+                })
+                .catch(function (err: any) {
+                    // some logging here please!
+                    Log.info(err);
+                    expect.fail();
+                });
+        } catch (err) {
+            // and some more logging here!
+            Log.info(err);
+            expect.fail();
+        }
+    });
+
+    it("echo test fail to improve coverage", function () {
+        try {
+            return chai.request(URL)
+                .get("/echo")
+                .then(function (res: Response) {
+                    // some logging here please!
+                    Log.info("successful echo");
+                    expect.fail();
+                })
+                .catch(function (err: any) {
+                    // some logging here please!
+                    Log.info(err);
+                    expect(err.status).to.be.equal(500);
+                });
+        } catch (err) {
+            // and some more logging here!
+            Log.info(err);
+            expect.fail();
+        }
+    });
 });
