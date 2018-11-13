@@ -267,7 +267,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (data[key] === undefined) {
                     throw new Error("invalid key in group key");
                 }
-                a = a + "%" + (data[key] as string);
+                a +=  (data[key] as string);
             }
             if (dataDict[a] === undefined) {
                 dataDict[a] = [data];
@@ -460,7 +460,7 @@ export default class InsightFacade implements IInsightFacade {
                 }
                 if (order) {
                     if (isString(order)) {
-                        if (! columns.includes(order as string)) {
+                        if (! columns.includes(order)) {
                             throw new InsightError("order is not in the column");
                         }
                         result.sort((a, b) => {
@@ -474,13 +474,13 @@ export default class InsightFacade implements IInsightFacade {
                         });
                     } else {
                         const applykeys = order.keys;
-                        if (applykeys.length < 1) {
-                            throw new Error("at least 1 key in order key");
-                        }
                         for (const k of applykeys) {
                             if (! columns.includes(k)) {
                                 throw new Error("keys in order dir key should be in column");
                             }
+                        }
+                        if (applykeys.length < 1) {
+                            throw new Error("at least 1 key in order key");
                         }
                         const dir = order.dir;
                         if (dir === undefined) {
