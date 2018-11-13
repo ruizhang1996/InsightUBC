@@ -289,8 +289,8 @@ export default class InsightFacade implements IInsightFacade {
                 group[key] = sections[0][key];
             }
             for ( const rule of rules) {
-                if (Object.keys(rule).length === 0) {
-                    throw new Error("empty rule");
+                if (Object.keys(rule).length !== 1) {
+                    throw new Error("rule should have exact one apply key");
                 }
                 const applyKey = Object.keys(rule)[0];
                 if (applyKey.length < 1) {
@@ -302,8 +302,8 @@ export default class InsightFacade implements IInsightFacade {
                 if (group[applyKey]) {
                     throw new Error("duplicate applykeys in two rules");
                 }
-                if (Object.keys(rule[applyKey]).length === 0) {
-                    throw new Error("empty apply rule body");
+                if (Object.keys(rule[applyKey]).length !== 1) {
+                    throw new Error("apply body should have exact one token");
                 }
                 const token = Object.keys(rule[applyKey])[0];
                 const ID_KEY = rule[applyKey][token];
