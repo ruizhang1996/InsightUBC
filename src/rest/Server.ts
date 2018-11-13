@@ -143,7 +143,7 @@ export default class Server {
             res.json(200, {result: response});
             Log.trace("performQuery successful");
         }).catch(function (e) {
-            res.json(404, {error: e.message});
+            res.json(400, {error: e.message});
             Log.trace("performQuery unsuccessful");
         });
         return next();

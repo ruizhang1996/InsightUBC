@@ -9,13 +9,12 @@
  */
 document.getElementById('submit-button').addEventListener('click', function() {
     let query = CampusExplorer.buildQuery();
-    let resultMessage = document.getElementById('result-message');
 
     CampusExplorer.sendQuery(query).then(function(result) {
             CampusExplorer.renderResult(result);
         })
         .catch(function(error) {
-            resultMessage.innerText = error;
+            CampusExplorer.renderResult(error);
         });
 });
 
