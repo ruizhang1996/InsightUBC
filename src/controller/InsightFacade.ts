@@ -267,7 +267,7 @@ export default class InsightFacade implements IInsightFacade {
                 if (data[key] === undefined) {
                     throw new Error("invalid key in group key");
                 }
-                a = a + (data[key] as string);
+                a = a + "%" + (data[key] as string);
             }
             if (dataDict[a] === undefined) {
                 dataDict[a] = [data];
