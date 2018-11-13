@@ -23,7 +23,7 @@ function buildWhere(panel,id) {
     const condition_types = panel.getElementsByClassName("control-group condition-type")[0].getElementsByTagName("input");
     let typecode = -1;
     let type;
-    for (var i = 0 ; i < condition_types.length; i++){
+    for (let i = 0 ; i < condition_types.length; i++){
         if(condition_types[i].checked){
             typecode = i;
             break;
@@ -108,7 +108,7 @@ function buildTransformation(panel,id) {
     const applys = panel.getElementsByClassName("control-group transformation");
     const applyRules = [];
     for (rule of applys){
-        const term = rule.getElementsByClassName("control term")[0].value;
+        const term = rule.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value;
         let operator;
         let field;
         for ( const op of rule.getElementsByClassName("control operators")[0].getElementsByTagName("option")){
