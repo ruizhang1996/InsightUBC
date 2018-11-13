@@ -1,3 +1,32 @@
 {
     "query1":{"WHERE": {"IS": {"courses_dept": "cpsc"} }, "OPTIONS": {"COLUMNS": ["courses_dept", "courses_id"], "ORDER": "courses_id"} },
+    "query4": {
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_dept": "cpsc"
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_id": "310"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_avg",
+                "courses_dept",
+                "courses_id"
+            ],
+            "ORDER": {
+                "dir": "UP",
+                "keys": [
+                    "courses_avg"
+                ]
+            }
+        }
+    }
 }

@@ -1,3 +1,6 @@
 {
-    "query1": "simple query IS comparison for department with two columns and old order syntax"
+    "query1": "simple query IS comparison for department with two columns and old order syntax",
+    "query2": "somethinssfjsfd",
+    "query3": "simple query IS comparison for department with two columns and old order syntax",
+    "query4": "simple query AND IS dept cpsc IS id 310 with 3 columns and order on avg"
 }

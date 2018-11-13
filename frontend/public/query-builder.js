@@ -24,7 +24,7 @@ function buildWhere(panel,id) {
     let typecode = -1;
     let type;
     for (var i = 0 ; i < condition_types.length; i++){
-        if(condition_types[i].getAttribute("checked")){
+        if(condition_types[i].checked){
             typecode = i;
             break;
         }
