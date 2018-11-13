@@ -64,5 +64,28 @@
                     "COUNT": "courses_audit"
                 }
             }
-        ]}}
+        ]}},
+
+    "query8": {
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_dept": "cpsc"
+                    }
+                },
+                {
+                    "IS": {
+                        "courses_id": "310"
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_id"
+            ]
+
+        }
+    }
 }

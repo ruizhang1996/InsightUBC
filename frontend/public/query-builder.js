@@ -129,8 +129,10 @@ function buildTransformation(panel,id) {
         applyrule[term] = entry;
         applyRules.push(applyrule);
     }
-    if ( groups.length !== 0 || applyRules.length !== 0 ){
+    if ( groups.length !== 0  ){
         transformation["GROUP"] = groups;
+    }
+    if (applyRules.length !== 0){
         transformation["APPLY"] = applyRules;
     }
 
@@ -164,8 +166,7 @@ function buildOption(panel,id) {
             orders.push(ID_KEY);
         }
     }
-    if (orders.length === 0 && panel.getElementsByClassName("control descending")[0].
-        getElementsByTagName("input")[0].checked === undefined){
+    if (orders.length === 0){
         return options;
     }
     let orderObj = {};
