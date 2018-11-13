@@ -289,6 +289,9 @@ export default class InsightFacade implements IInsightFacade {
                 group[key] = sections[0][key];
             }
             for ( const rule of rules) {
+                if (Object.keys(rule).length === 0) {
+                    throw new Error("empty rule");
+                }
                 const applyKey = Object.keys(rule)[0];
                 if (applyKey.length < 1) {
                     throw new Error("at least one character in applykey");
@@ -298,6 +301,9 @@ export default class InsightFacade implements IInsightFacade {
                 }
                 if (group[applyKey]) {
                     throw new Error("duplicate applykeys in two rules");
+                }
+                if (Object.keys(rule[applyKey]).length === 0) {
+                    throw new Error("empty apply rule body");
                 }
                 const token = Object.keys(rule[applyKey])[0];
                 const ID_KEY = rule[applyKey][token];
@@ -386,6 +392,9 @@ export default class InsightFacade implements IInsightFacade {
                     if (Object.keys(transformation.GROUP).length < 1) {
                         throw new Error("at least one key in Group");
                     }
+                    if (!transformation.GROUP[0].includes("_")) {
+                        throw new Error("no _ in group");
+                    }
                     id = transformation.GROUP[0].split("_")[0];
                 } else {
                     if (!columns[0].includes("_")) {
@@ -451,7 +460,7 @@ export default class InsightFacade implements IInsightFacade {
                 }
                 if (order) {
                     if (isString(order)) {
-                        if (!columns.includes(order)) {
+                        if (! columns.includes(order as string)) {
                             throw new InsightError("order is not in the column");
                         }
                         result.sort((a, b) => {
@@ -465,13 +474,13 @@ export default class InsightFacade implements IInsightFacade {
                         });
                     } else {
                         const applykeys = order.keys;
+                        if (applykeys.length < 1) {
+                            throw new Error("at least 1 key in order key");
+                        }
                         for (const k of applykeys) {
                             if (! columns.includes(k)) {
                                 throw new Error("keys in order dir key should be in column");
                             }
-                        }
-                        if (applykeys.length < 1) {
-                            throw new Error("at least 1 key in order key");
                         }
                         const dir = order.dir;
                         if (dir === undefined) {
