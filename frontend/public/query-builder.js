@@ -110,10 +110,10 @@ function buildTransformation(panel,id) {
     let transformation = {};
     let groups = [];
     const groupNames = panel.getElementsByClassName("form-group groups")[0].getElementsByTagName("input");
-    for (g of groupNames){
+    for (const g of groupNames){
         if (g.checked){
             const ID_KEY = id + "_" + g.value;
-            groups.push(ID_KEY)
+            groups.push(ID_KEY);
         }
     }
     const applys = panel.getElementsByClassName("control-group transformation");
