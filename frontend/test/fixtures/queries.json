@@ -88,26 +88,5 @@
 
         }
     },
-    "query9": {
-        "WHERE": {
-            "AND": [
-                {
-                    "IS": {
-                        "courses_dept": "cpsc"
-                    }
-                },
-                {
-                    "IS": {
-                        "courses_id": "310"
-                    }
-                }
-            ]
-        },
-        "OPTIONS": {
-            "COLUMNS": [
-                "courses_id"
-            ]
-
-        }
-    }
+    "query9": {"WHERE":{"NOT":{"IS":{"courses_dept":"cpsc"}}},"OPTIONS":{"COLUMNS":[]},"TRANSFORMATION":{"APPLY":[{"":{"COUNT":"courses_audit"}}]}}
 }
