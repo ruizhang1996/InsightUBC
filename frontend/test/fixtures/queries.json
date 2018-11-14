@@ -177,6 +177,12 @@
                     "MAX": "courses_avg"
                 }
             }
-        ]}}
+        ]}},
+    "query13":{"WHERE": { }, "OPTIONS": {"COLUMNS": ["courses_id"], "ORDER":  {
+        "dir": "DOWN",
+        "keys": [
+
+        ]
+    } }}
 
 }

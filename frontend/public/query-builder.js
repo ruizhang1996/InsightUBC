@@ -181,11 +181,16 @@ function buildOption(panel,id) {
             orders.push(ID_KEY);
         }
     }
-    if (orders.length === 0){
+    let orderObj = {};
+    if (orders.length === 0 ){
+        if (panel.getElementsByClassName("control descending")[0].getElementsByTagName("input")[0].checked ){
+            orderObj["dir"] = "DOWN";
+            orderObj["keys"] = [];
+            options["ORDER"] = orderObj;
+        }
         return options;
     }
-    let orderObj = {};
-    if (panel.getElementsByClassName("control descending")[0].getElementsByTagName("input")[0].checked){
+    if (panel.getElementsByClassName("control descending")[0].getElementsByTagName("input")[0].checked ){
         orderObj["dir"] = "DOWN";
     } else {
         orderObj["dir"] = "UP";
