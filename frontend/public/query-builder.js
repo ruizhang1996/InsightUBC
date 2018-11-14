@@ -174,7 +174,7 @@ function buildOption(panel,id) {
     for (const o of panel.getElementsByClassName("form-group order")[0].getElementsByTagName("option")){
         if (o.selected) {
             let ID_KEY;
-            if (o.class !== "transformation"){
+            if (o.getAttribute("class") !== "transformation"){
                 ID_KEY = id + "_" + o.value;
             } else {
                 ID_KEY = o.value;

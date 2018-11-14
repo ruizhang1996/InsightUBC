@@ -40,13 +40,13 @@
         "keys": [
             "courses_avg"
         ]
-    } }, "TRANSFORMATION": {"GROUP": [
+    } }, "TRANSFORMATIONS": {"GROUP": [
         "courses_dept","courses_id"
     ],
         "APPLY": [
             {
                 "maxAvg": {
-                    "AVG": "courses_avg"
+                    "MAX": "courses_avg"
                 }
             }
         ]}},
@@ -55,7 +55,7 @@
         "keys": [
             "courses_id"
         ]
-    } }, "TRANSFORMATION": {"GROUP": [
+    } }, "TRANSFORMATIONS": {"GROUP": [
 
     ],
         "APPLY": [
@@ -114,7 +114,7 @@
             ]
 
         },
-        "TRANSFORMATION": {"GROUP": [
+        "TRANSFORMATIONS": {"GROUP": [
 
         ],
             "APPLY": [
@@ -163,7 +163,7 @@
         "keys": [
             "courses_id"
         ]
-    } }, "TRANSFORMATION": {"GROUP": [
+    } }, "TRANSFORMATIONS": {"GROUP": [
         "courses_dept", "courses_id"
     ],
         "APPLY": [
@@ -184,6 +184,7 @@
 
         ]
     } }},
-    "query14": {"WHERE":{},"OPTIONS":{"COLUMNS":["courses_dept","courses_id"]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"a":{"COUNT":"courses_audit"}},{"b":{"COUNT":"courses_audit"}}]}}
-
+    "query14": {"WHERE":{},"OPTIONS":{"COLUMNS":["courses_dept","courses_id"]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"a":{"COUNT":"courses_audit"}},{"b":{"COUNT":"courses_audit"}}]}},
+    "query15": {"WHERE":{},"OPTIONS":{"COLUMNS":["courses_dept","courses_id"]},"TRANSFORMATIONS":{"GROUP":["courses_audit","courses_avg","courses_dept","courses_fail","courses_id","courses_instructor","courses_pass","courses_title","courses_uuid","courses_year"],"APPLY":[{"a":{"COUNT":"courses_audit"}},{"b":{"COUNT":"courses_audit"}}]}},
+    "query16": {"WHERE":{"AND":[{"IS":{"courses_dept":"cpsc"}},{"GT":{"courses_avg":93}}]},"OPTIONS":{"COLUMNS":["courses_dept","courses_id","avgavg","maxpass"],"ORDER":{"dir":"DOWN","keys":["avgavg","maxpass"]}},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"avgavg":{"AVG":"courses_avg"}},{"maxpass":{"MAX":"courses_pass"}}]}}
 }
