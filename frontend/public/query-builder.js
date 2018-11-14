@@ -160,7 +160,7 @@ function buildOption(panel,id) {
     for (const c of panel.getElementsByClassName("form-group columns")[0].getElementsByClassName("control field")){
         if (c.getElementsByTagName("input")[0].checked){
             const ID_KEY = id + "_" + c.getElementsByTagName("input")[0].value;
-            columns.push[ID_KEY];
+            columns.push(ID_KEY);
         }
     }
     for (const c of panel.getElementsByClassName("form-group columns")[0].getElementsByClassName("control transformation")){

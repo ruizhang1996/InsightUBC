@@ -157,6 +157,26 @@
             ]
 
         }
-    }
+    },
+    "query12":{"WHERE": {"IS": {"courses_dept": "cpsc"} }, "OPTIONS": {"COLUMNS": ["courses_id","maxavg"], "ORDER":  {
+        "dir": "UP",
+        "keys": [
+            "courses_id"
+        ]
+    } }, "TRANSFORMATION": {"GROUP": [
+        "courses_dept", "courses_id"
+    ],
+        "APPLY": [
+            {
+                "maxavg": {
+                    "MAX": "courses_avg"
+                }
+            },
+            {
+                "max": {
+                    "MAX": "courses_avg"
+                }
+            }
+        ]}}
 
 }
