@@ -88,5 +88,75 @@
 
         }
     },
-    "query9": {"WHERE":{"NOT":{"IS":{"courses_dept":"cpsc"}}},"OPTIONS":{"COLUMNS":[]},"TRANSFORMATION":{"APPLY":[{"":{"COUNT":"courses_audit"}}]}}
+    "query9": {
+        "WHERE": {
+            "AND": [
+                {
+                    "IS": {
+                        "courses_dept": "*cp"
+                    }
+                },
+                {
+                    "GT": {
+                        "courses_avg": "a"
+                    }
+                },
+                {
+                    "EQ": {
+                        "courses_fail": ""
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_id"
+            ]
+
+        },
+        "TRANSFORMATION": {"GROUP": [
+
+        ],
+            "APPLY": [
+                {
+                    "aa": {
+                        "COUNT": "courses_audit"
+                    }
+                },
+                {
+                    "": {
+                        "COUNT": "courses_audit"
+                    }
+                }
+            ]}
+
+    },
+    "query10":{"WHERE": {}, "OPTIONS": {"COLUMNS": ["courses_id"]  }},
+
+    "query11": {
+        "WHERE": {
+            "AND": [ {
+                "NOT":
+                {
+                    "IS": {
+                        "courses_dept": "cpsc"
+                    }
+                }
+                }
+                ,
+                {
+                    "GT": {
+                        "courses_avg": 94
+                    }
+                }
+            ]
+        },
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses_id"
+            ]
+
+        }
+    }
+
 }

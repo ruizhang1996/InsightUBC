@@ -57,12 +57,23 @@ function buildWhere(panel,id) {
                 break;
             }
         }
-        const value = cond.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value;
-        if(operator === "IS"){
-            term = value;
+        let value ;
+        if ( cond.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value){
+            value = cond.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value;
+            if(operator === "IS"){
+                term = value;
+            } else {
+                if (! isNaN(value)){
+                    term = Number(value);
+                } else {
+                    term = value;
+                }
+
+            }
         } else {
-            term = Number(value);
+            term = "";
         }
+
         const ID_KEY = id+ "_" + field;
         let filter = {};
         let entry = {};
@@ -107,8 +118,14 @@ function buildTransformation(panel,id) {
     }
     const applys = panel.getElementsByClassName("control-group transformation");
     const applyRules = [];
-    for (rule of applys){
-        const term = rule.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value;
+    for (const rule of applys){
+        let term;
+        if (rule.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value){
+            term = rule.getElementsByClassName("control term")[0].getElementsByTagName("input")[0].value;
+        } else {
+            term = "";
+        }
+
         let operator;
         let field;
         for ( const op of rule.getElementsByClassName("control operators")[0].getElementsByTagName("option")){
@@ -129,10 +146,8 @@ function buildTransformation(panel,id) {
         applyrule[term] = entry;
         applyRules.push(applyrule);
     }
-    if ( groups.length !== 0  ){
+    if ( groups.length !== 0  || applyRules.length !== 0){
         transformation["GROUP"] = groups;
-    }
-    if (applyRules.length !== 0){
         transformation["APPLY"] = applyRules;
     }
 
