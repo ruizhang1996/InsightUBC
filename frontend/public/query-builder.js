@@ -137,6 +137,7 @@ function buildTransformation(panel,id) {
         for (const f of rule.getElementsByClassName("control fields")[0].getElementsByTagName("option")){
             if (f.selected){
                 field = f.value;
+                break;
             }
         }
         let applyrule = {};
