@@ -10,6 +10,9 @@ describe("buildQuery test suite", function() {
                     let actualQuery = CampusExplorer.buildQuery(document);
                     let expectedQuery = queryFixtures[queryName];
                     expect(actualQuery).to.equalQuery(expectedQuery);
+                    console.log(queryName);
+                    console.log(JSON.stringify(actualQuery));
+                    console.log(JSON.stringify(expectedQuery));
                 });
             }
         }

@@ -183,6 +183,7 @@
         "keys": [
 
         ]
-    } }}
+    } }},
+    "query14": {"WHERE":{},"OPTIONS":{"COLUMNS":["courses_dept","courses_id"]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"a":{"COUNT":"courses_audit"}},{"b":{"COUNT":"courses_audit"}}]}}
 
 }

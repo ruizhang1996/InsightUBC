@@ -13,7 +13,7 @@ CampusExplorer.buildQuery = function() {
     query["OPTIONS"] = buildOption(panel,id);
     const trans = buildTransformation(panel,id);
     if (Object.keys(trans).length > 0 ){
-        query["TRANSFORMATION"] = trans;
+        query["TRANSFORMATIONS"] = trans;
     }
     return query;
 };
