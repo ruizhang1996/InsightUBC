@@ -6,19 +6,16 @@
  */
 CampusExplorer.sendQuery = function(query) {
     return new Promise(function(fulfill, reject) {
-        var request = new XMLHttpRequest();
+        let request = new XMLHttpRequest();
         request.open("POST", "/query", true);
         request.onload = function() {
-            var result = JSON.parse(request.responseText);
-            if (request.status === 400) {
-                reject(result);
+            if (request.status === 200) {
+                fulfill(JSON.parse(request.response));
             } else {
-                fulfill(result);
+                reject(JSON.parse(request.response))
             }
         };
-        request.onerror = function() {
-            reject('The request failed')
-        };
+        request.setRequestHeader("Content-Type", "application/json");
         request.send(JSON.stringify(query));
     });
 };
